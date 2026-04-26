@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy-950: #060D1A;
+  --navy-900: #0B1A2E;
+  --navy-800: #0D2240;
+  --ivory-100: #F8F1E3;
+  --ivory-200: #F2E6CC;
+  --gold-500: #C9A84C;
+  --gold-400: #D4AA50;
+  --emerald-700: #2D6A4F;
+  --emerald-600: #40916C;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--navy-950);
+  color: var(--ivory-200);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #060D1A;
+}
+::-webkit-scrollbar-thumb {
+  background: #C9A84C44;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C9A84C88;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(201, 168, 76, 0.25);
+  color: #F8F1E3;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.35;
+}
+
+/* Smooth focus */
+*:focus-visible {
+  outline: 1px solid rgba(201, 168, 76, 0.6);
+  outline-offset: 2px;
+}
+
+/* Gold gradient text utility */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #E8C97A 0%, #C9A84C 50%, #B8922A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow border utility */
+.glow-border {
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.05), inset 0 1px 0 0 rgba(201, 168, 76, 0.08);
+}
+
+.glow-border:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  box-shadow: 0 0 20px rgba(201, 168, 76, 0.08), 0 0 0 1px rgba(201, 168, 76, 0.15), inset 0 1px 0 0 rgba(201, 168, 76, 0.12);
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(13, 34, 64, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Section padding utility */
+.section-pad {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+@media (max-width: 768px) {
+  .section-pad {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
