@@ -619,7 +619,7 @@ function Footer(){
         <div>
           {/* FIXED: Gold name, white copy, correct name, correct rights */}
           <div className="footer-name">Rathnavel Pon ❤️</div>
-          <div className="footer-copy">© 2025 · rathnavelpon.in · All lefts are unreserved😉</div>
+          <div className="footer-copy">© 2026 · rathnavelpon.in · All lefts are unreserved😉</div>
         </div>
         <div className="footer-socials">
           {socials.map((s,i)=><a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="footer-social-btn">{s.icon}</a>)}
