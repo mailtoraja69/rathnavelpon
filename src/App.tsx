@@ -949,7 +949,7 @@ function Footer() {
       <div className="footer-inner">
         <div>
           <div className="footer-name">Rathnavel Pon</div>
-          <div className="footer-copy">© 2025 · rathnavelpon.in · All rights reserved</div>
+          <div className="footer-copy">© 2026 · rathnavelpon.in · All lefts are unreserved😉</div>
         </div>
         <div className="footer-socials">
           {socials.map((s, i) => (
