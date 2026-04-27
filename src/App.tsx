@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import {
   Linkedin, Twitter, Instagram, Facebook,
-  Mail, MapPin, ArrowRight, Menu, X, ExternalLink, Heart
+  Mail, MapPin, ArrowRight, Menu, X, ExternalLink, Heart, Calendar
 } from 'lucide-react'
 
 /* ═══════════════════════════════════════════════════
@@ -45,7 +45,6 @@ function CountUp({ to, suffix = '', duration = 2200 }: { to: number; suffix?: st
   const [count, setCount] = useState(0)
   const [started, setStarted] = useState(false)
   const spanRef = useRef<HTMLSpanElement>(null)
-
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting && !started) setStarted(true) },
@@ -54,7 +53,6 @@ function CountUp({ to, suffix = '', duration = 2200 }: { to: number; suffix?: st
     if (spanRef.current) obs.observe(spanRef.current)
     return () => obs.disconnect()
   }, [started])
-
   useEffect(() => {
     if (!started) return
     let startTime = 0
@@ -68,12 +66,43 @@ function CountUp({ to, suffix = '', duration = 2200 }: { to: number; suffix?: st
     }
     requestAnimationFrame(animate)
   }, [started, to, duration])
-
   return <span ref={spanRef}>{count.toLocaleString()}{suffix}</span>
 }
 
 /* ═══════════════════════════════════════════════════
-   ANIMATED DOODLES
+   MAP PIN SVG
+═══════════════════════════════════════════════════ */
+function MapPinDrop({ x, y, color, delay }: { x: number; y: number; color: string; delay: number }) {
+  return (
+    <motion.g
+      initial={{ scale: 0, opacity: 0, y: -20 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      transition={{ delay, type: 'spring', stiffness: 280, damping: 18 }}
+      style={{ transformOrigin: `${x}px ${y}px` }}
+    >
+      {/* Drop shadow */}
+      <ellipse cx={x} cy={y + 3} rx={8} ry={3} fill="rgba(0,0,0,0.18)" />
+      {/* Pin head */}
+      <circle cx={x} cy={y - 18} r={14} fill={color} />
+      {/* Pin tip */}
+      <path
+        d={`M${x - 10} ${y - 8} Q${x} ${y + 2} ${x + 10} ${y - 8}`}
+        fill={color}
+      />
+      {/* Inner dot */}
+      <circle cx={x} cy={y - 18} r={6} fill="white" />
+      {/* Bounce shadow on land */}
+      <motion.ellipse
+        cx={x} cy={y + 3} rx={8} ry={3} fill="rgba(0,0,0,0.08)"
+        animate={{ scaleX: [1, 0.5, 1], opacity: [0.18, 0.05, 0.18] }}
+        transition={{ duration: 1.2, delay: delay + 0.3, repeat: Infinity, ease: 'easeInOut' }}
+      />
+    </motion.g>
+  )
+}
+
+/* ═══════════════════════════════════════════════════
+   DOODLES
 ═══════════════════════════════════════════════════ */
 function CricketDoodle({ style }: { style: React.CSSProperties }) {
   return (
@@ -81,13 +110,8 @@ function CricketDoodle({ style }: { style: React.CSSProperties }) {
       animate={{ y: [-10, 10, -10], rotate: [-4, 4, -4] }}
       transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}>
       <svg viewBox="0 0 80 80" width="72" height="72" fill="none">
-        <motion.circle cx="60" cy="16" r="10"
-          stroke="rgba(200,150,62,0.35)" strokeWidth="1.5"
+        <motion.circle cx="60" cy="16" r="10" stroke="rgba(200,150,62,0.35)" strokeWidth="1.5"
           animate={{ cx: [60, 35, 60], cy: [16, 44, 16] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }} />
-        <motion.path d="M 58 8 Q 62 16, 58 24"
-          stroke="rgba(200,150,62,0.25)" strokeWidth="1" fill="none"
-          animate={{ opacity: [0.3, 0.8, 0.3] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }} />
         <motion.path d="M 8 72 L 20 60 L 42 38 L 36 32 L 14 54 Z"
           stroke="rgba(45,106,79,0.35)" strokeWidth="1.5" fill="none" strokeLinejoin="round"
@@ -107,8 +131,7 @@ function CinemaDoodle({ style }: { style: React.CSSProperties }) {
       transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}>
       <svg viewBox="0 0 80 80" width="68" height="68" fill="none">
         <rect x="8" y="26" width="56" height="42" rx="4" stroke="rgba(200,150,62,0.35)" strokeWidth="1.5" />
-        <motion.rect x="8" y="16" width="56" height="14" rx="3"
-          stroke="rgba(200,150,62,0.35)" strokeWidth="1.5"
+        <motion.rect x="8" y="16" width="56" height="14" rx="3" stroke="rgba(200,150,62,0.35)" strokeWidth="1.5"
           animate={{ rotate: [0, -18, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2.5, ease: 'easeInOut' }}
           style={{ transformOrigin: '8px 16px' }} />
@@ -159,7 +182,6 @@ function LeafDoodle({ style }: { style: React.CSSProperties }) {
       <svg viewBox="0 0 60 60" width="54" height="54" fill="none">
         <path d="M 12 50 Q 28 8 52 6 Q 46 34 12 50Z" stroke="rgba(45,106,79,0.35)" strokeWidth="1.5" />
         <path d="M 12 50 L 36 24" stroke="rgba(45,106,79,0.25)" strokeWidth="1" strokeLinecap="round" />
-        <path d="M 25 37 Q 32 28 38 22" stroke="rgba(45,106,79,0.18)" strokeWidth="1" strokeLinecap="round" />
       </svg>
     </motion.div>
   )
@@ -179,8 +201,6 @@ function PoliticsDoodle({ style }: { style: React.CSSProperties }) {
           animate={{ scaleX: [1, 0.85, 1] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           style={{ transformOrigin: '32px 18px' }} />
-        <path d="M 28 42 Q 32 44 36 42" stroke="rgba(200,150,62,0.25)" strokeWidth="1" strokeLinecap="round" />
-        <line x1="24" y1="38" x2="40" y2="38" stroke="rgba(200,150,62,0.2)" strokeWidth="1" strokeLinecap="round" />
       </svg>
     </motion.div>
   )
@@ -208,11 +228,11 @@ function Navigation() {
       <div className="nav-inner">
         <a href="#home" className="nav-logo">
           <div className="nav-logo-badge"><span className="nav-logo-initials">RP</span></div>
-          <span className="nav-logo-name">Rathnavel Pon</span>
+          <span className="nav-logo-name">Rathnavel Ponnuswami</span>
         </a>
         <div className="nav-links">
           {links.map(l => <a key={l.label} href={l.href} className="nav-link">{l.label}</a>)}
-          <a href="#connect" className="nav-cta">Connect</a>
+          <a href="#book" className="nav-cta">Book a Call</a>
         </div>
         <button className="nav-mobile-toggle" onClick={() => setOpen(!open)} aria-label="menu">
           {open ? <X size={22} /> : <Menu size={22} />}
@@ -223,7 +243,7 @@ function Navigation() {
           <motion.div className="nav-mobile-menu"
             initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }}>
-            {[...links, { label: 'Connect', href: '#connect' }].map(l => (
+            {[...links, { label: 'Book a Call', href: '#book' }].map(l => (
               <a key={l.label} href={l.href} className="nav-link" onClick={() => setOpen(false)}>{l.label}</a>
             ))}
           </motion.div>
@@ -266,7 +286,6 @@ function Hero() {
           transition={{ duration: 3.8, delay: 0.8, ease: 'easeInOut' }} />
       </motion.svg>
 
-      {/* Floating doodles — mouse reactive */}
       <motion.div style={{ x: doodleX, y: doodleY, position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <CricketDoodle style={{ top: '14%', left: '5%' }} />
         <CinemaDoodle style={{ top: '22%', right: '4%' }} />
@@ -292,7 +311,7 @@ function Hero() {
           <motion.p className="hero-sub"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.1 }}>
-            Rathnavel Pon brings together engineering education,
+            Rathnavel Ponnuswami brings together engineering education,
             environmental awareness, insurance advisory, and community
             service — a career dedicated to learning, guidance, and public impact.
           </motion.p>
@@ -302,7 +321,7 @@ function Hero() {
             <a href="https://www.linkedin.com/in/reavan/" target="_blank" rel="noopener noreferrer" className="btn-primary">
               <Linkedin size={15} /> Connect on LinkedIn <ArrowRight size={14} />
             </a>
-            <a href="#journey" className="btn-outline">Explore Journey ↓</a>
+            <a href="#book" className="btn-outline"><Calendar size={14} /> Book a Session</a>
           </motion.div>
         </div>
 
@@ -311,7 +330,7 @@ function Hero() {
             initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}>
             {!imgError ? (
-              <img src="/rathnavel.jpg" alt="Rathnavel Pon" className="hero-photo"
+              <img src="/rathnavel.jpg" alt="Rathnavel Ponnuswami" className="hero-photo"
                 onError={() => setImgError(true)} />
             ) : (
               <div className="hero-photo-fallback"><span>RP</span></div>
@@ -371,7 +390,7 @@ function CredibilityStrip() {
 }
 
 /* ═══════════════════════════════════════════════════
-   IMPACT NUMBERS — COUNTUP
+   IMPACT NUMBERS — COUNTUP  (color fixed: white text on dark)
 ═══════════════════════════════════════════════════ */
 function ImpactNumbers() {
   const { ref, visible } = useScrollReveal(0.2)
@@ -392,14 +411,16 @@ function ImpactNumbers() {
           initial={{ opacity: 0, y: 20 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}>
-          <div className="eyebrow" style={{ justifyContent: 'center', color: 'rgba(200,150,62,0.8)' }}>Impact in Numbers</div>
+          <div className="eyebrow" style={{ justifyContent: 'center', color: 'rgba(200,150,62,0.75)' }}>Impact in Numbers</div>
           <h2 style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: 'clamp(2rem,3.5vw,3rem)',
             fontWeight: 700, color: 'white', letterSpacing: '-0.02em' }}>
-            20 Years. Thousands of <span className="gold-text">Lives Touched.</span>
+            20 Years. Thousands of{' '}
+            <span style={{ color: '#E8C97A' }}>Lives Touched.</span>
           </h2>
         </motion.div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1,
-          background: 'rgba(255,255,255,0.06)', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)' }}>
+          background: 'rgba(255,255,255,0.06)', borderRadius: 16, overflow: 'hidden',
+          border: '1px solid rgba(255,255,255,0.06)' }}>
           {stats.map((s, i) => (
             <motion.div key={i}
               style={{ background: '#1D1D1F', padding: '2.5rem 2rem', textAlign: 'center' }}
@@ -407,11 +428,11 @@ function ImpactNumbers() {
               animate={visible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.1 }}>
               <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>{s.icon}</div>
-              <div style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: 'clamp(2.5rem,4vw,3.8rem)',
-                fontWeight: 700, lineHeight: 1, marginBottom: '0.5rem' }}>
-                <span className="gold-text">
-                  {visible ? <CountUp to={s.to} suffix={s.suffix} /> : `0${s.suffix}`}
-                </span>
+              {/* ← FIXED: direct color, no gradient class */}
+              <div style={{ fontFamily: '"Playfair Display", Georgia, serif',
+                fontSize: 'clamp(2.5rem,4vw,3.8rem)', fontWeight: 700, lineHeight: 1,
+                marginBottom: '0.5rem', color: '#E8C97A' }}>
+                {visible ? <CountUp to={s.to} suffix={s.suffix} /> : `0${s.suffix}`}
               </div>
               <div style={{ fontFamily: '"Manrope", system-ui, sans-serif', fontSize: '0.72rem',
                 letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.35)' }}>
@@ -426,7 +447,7 @@ function ImpactNumbers() {
 }
 
 /* ═══════════════════════════════════════════════════
-   ABOUT — with personal badges
+   ABOUT
 ═══════════════════════════════════════════════════ */
 function About() {
   const { ref, visible } = useScrollReveal()
@@ -465,8 +486,7 @@ function About() {
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
                   padding: '0.35rem 0.85rem', borderRadius: '100px', fontSize: '0.72rem',
                   fontFamily: '"Manrope", system-ui, sans-serif', fontWeight: 500,
-                  border: `1px solid ${b.color}30`, background: `${b.color}0A`, color: b.color,
-                  cursor: 'default' }}
+                  border: `1px solid ${b.color}30`, background: `${b.color}0A`, color: b.color }}
                 initial={{ opacity: 0, scale: 0.85 }}
                 animate={visible ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.4, delay: 0.3 + i * 0.07 }}
@@ -484,13 +504,12 @@ function About() {
             ))}
           </div>
         </motion.div>
-
         <motion.div className="about-photo-frame"
           initial={{ opacity: 0, x: 40 }}
           animate={visible ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
           {!imgError ? (
-            <img src="/rathnavel.jpg" alt="Rathnavel Pon" className="about-photo"
+            <img src="/rathnavel.jpg" alt="Rathnavel Ponnuswami" className="about-photo"
               onError={() => setImgError(true)} />
           ) : (
             <div className="about-photo-fallback">RP</div>
@@ -501,8 +520,7 @@ function About() {
             style={{ position: 'absolute', bottom: '2rem', right: '-1.5rem',
               background: 'white', borderRadius: 12, padding: '0.75rem 1rem',
               boxShadow: '0 8px 30px rgba(0,0,0,0.12)', border: '1px solid rgba(0,0,0,0.06)',
-              display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' as const,
-              zIndex: 3 }}
+              display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' as const, zIndex: 3 }}
             initial={{ opacity: 0, x: 20 }}
             animate={visible ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.6, duration: 0.6 }}>
@@ -518,7 +536,7 @@ function About() {
 }
 
 /* ═══════════════════════════════════════════════════
-   S-CURVE WAVE TIMELINE
+   SKETCH ROAD MAP TIMELINE
 ═══════════════════════════════════════════════════ */
 function Journey() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -538,84 +556,169 @@ function Journey() {
     { year: '2021', org: 'ICICI Prudential Life', role: 'Insurance Advisor', detail: 'Present — protecting futures across Tamil Nadu' },
   ]
 
-  // Cards alternate: right, right, left, left, left, right, right, left, right
-  const sides = ['right', 'right', 'left', 'left', 'left', 'right', 'right', 'left', 'right']
+  // Pin colors — one per milestone, vibrant like the doodle reference
+  const pinColors = ['#E74C3C','#E67E22','#27AE60','#2980B9','#8E44AD','#E74C3C','#16A085','#E67E22','#C0392B']
+
+  // Pin positions (px, py = TIP of pin) and card side
+  // SVG viewBox: 0 0 920 2020
+  // Right-side pins (x≈740): card goes to the left
+  // Left-side pins (x≈160): card goes to the right
+  const pins = [
+    { x: 740, y: 100,  side: 'left'  as const },
+    { x: 160, y: 320,  side: 'right' as const },
+    { x: 740, y: 540,  side: 'left'  as const },
+    { x: 160, y: 760,  side: 'right' as const },
+    { x: 740, y: 980,  side: 'left'  as const },
+    { x: 160, y: 1200, side: 'right' as const },
+    { x: 740, y: 1420, side: 'left'  as const },
+    { x: 160, y: 1640, side: 'right' as const },
+    { x: 460, y: 1880, side: 'right' as const },
+  ]
+
+  // Winding sketch road connecting all pins
+  const roadPath = [
+    'M 740 100',
+    'C 580 160, 320 240, 160 320',
+    'C 60 380, 100 460, 740 540',
+    'C 880 580, 860 680, 160 760',
+    'C 50 820, 100 900, 740 980',
+    'C 880 1020, 850 1120, 160 1200',
+    'C 50 1260, 100 1340, 740 1420',
+    'C 880 1460, 850 1560, 160 1640',
+    'C 50 1700, 280 1820, 460 1880',
+  ].join(' ')
 
   return (
     <section id="journey" className="journey-section section-pad" ref={sectionRef}>
-      <div ref={titleRef} style={{ textAlign: 'center', marginBottom: '3.5rem', maxWidth: 900, margin: '0 auto 3.5rem' }}>
+      <div ref={titleRef} style={{ textAlign: 'center', marginBottom: '3rem', padding: '0 2rem' }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={titleVisible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
           <div className="eyebrow" style={{ justifyContent: 'center' }}>The Journey</div>
-          <h2 className="journey-heading">20 Years, <span className="gold-text">One Direction</span></h2>
+          <h2 className="journey-heading">
+            20 Years, <span className="gold-text">One Direction</span>
+          </h2>
+          <p style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '1.1rem',
+            color: 'var(--text-3)', maxWidth: 480, margin: '0 auto' }}>
+            Each pin marks a chapter. Follow the road.
+          </p>
         </motion.div>
       </div>
 
-      <div style={{ position: 'relative', maxWidth: 820, margin: '0 auto', padding: '0 1rem', minHeight: 1800 }}>
-        {/* S-CURVE SVG */}
-        <svg style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}
-          viewBox="0 0 820 1780" preserveAspectRatio="xMidYMid meet" fill="none">
-          {/* Gray base */}
-          <path d="M 410 30 C 680 60, 710 220, 410 400 C 110 580, 110 720, 410 900 C 710 1080, 710 1220, 410 1400 C 110 1580, 160 1700, 410 1750"
-            stroke="rgba(0,0,0,0.06)" strokeWidth="2" fill="none" strokeLinecap="round" />
-          {/* Animated gold */}
-          <motion.path d="M 410 30 C 680 60, 710 220, 410 400 C 110 580, 110 720, 410 900 C 710 1080, 710 1220, 410 1400 C 110 1580, 160 1700, 410 1750"
-            stroke="#C8963E" strokeWidth="2" fill="none" strokeLinecap="round"
-            style={{ pathLength, opacity: 0.5 }} />
-          {/* Pin dots along the S-curve */}
-          {[
-            { cx: 420, cy: 48 }, { cx: 640, cy: 190 }, { cx: 700, cy: 360 },
-            { cx: 430, cy: 450 }, { cx: 125, cy: 620 }, { cx: 115, cy: 780 },
-            { cx: 380, cy: 930 }, { cx: 680, cy: 1110 }, { cx: 415, cy: 1440 },
-          ].map((d, i) => (
-            <motion.circle key={i} cx={d.cx} cy={d.cy} r="7" fill="white" stroke="#C8963E" strokeWidth="2"
-              style={{ filter: 'drop-shadow(0 2px 6px rgba(200,150,62,0.3))' }}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.4, delay: 1.0 + i * 0.15 }} />
+      {/* SKETCH ROAD CONTAINER */}
+      <div style={{ position: 'relative', maxWidth: 960, margin: '0 auto', padding: '0 1rem', minHeight: 2060 }}>
+
+        {/* SVG SKETCH ROAD */}
+        <svg
+          style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, overflow: 'visible' }}
+          viewBox="0 0 920 2020"
+          preserveAspectRatio="xMidYMin meet"
+          fill="none"
+        >
+          <defs>
+            {/* Hand-drawn sketch filter */}
+            <filter id="sketch-road" x="-5%" y="-1%" width="110%" height="102%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.025 0.055" numOctaves="3" seed="8" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            {/* Slightly different seed for the dashed overlay */}
+            <filter id="sketch-dash" x="-5%" y="-1%" width="110%" height="102%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.03 0.06" numOctaves="2" seed="12" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+          </defs>
+
+          {/* Base road — dark thin sketch line */}
+          <motion.path
+            d={roadPath}
+            stroke="rgba(0,0,0,0.14)"
+            strokeWidth="3.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            filter="url(#sketch-road)"
+            style={{ pathLength }}
+          />
+
+          {/* Second pass — slightly offset for sketch texture */}
+          <motion.path
+            d={roadPath}
+            stroke="rgba(0,0,0,0.06)"
+            strokeWidth="5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            filter="url(#sketch-dash)"
+            style={{ pathLength, opacity: 0.7 }}
+          />
+
+          {/* Gold dashed center line — like a road marking */}
+          <motion.path
+            d={roadPath}
+            stroke="rgba(200,150,62,0.3)"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeDasharray="14 8"
+            filter="url(#sketch-road)"
+            style={{ pathLength, opacity: 0.5 }}
+          />
+
+          {/* MAP PINS — each drops with a bounce */}
+          {pins.map((pin, i) => (
+            <MapPinDrop key={i} x={pin.x} y={pin.y} color={pinColors[i]} delay={0.5 + i * 0.14} />
           ))}
         </svg>
 
-        {/* CARDS — positioned to mirror the S-curve flow */}
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '1.6rem' }}>
-          {entries.map((e, i) => {
-            const side = sides[i]
-            return (
-              <motion.div key={i}
-                style={{ display: 'flex', justifyContent: side === 'right' ? 'flex-end' : 'flex-start' }}
-                initial={{ opacity: 0, x: side === 'right' ? 40 : -40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
-                <div style={{
-                  width: '46%',
-                  background: 'white',
-                  border: '1px solid rgba(0,0,0,0.07)',
-                  borderRadius: 14,
-                  padding: '1.3rem 1.5rem',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.055)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, width: 3, height: '100%',
-                    background: i < 7 ? 'linear-gradient(to bottom, #C8963E, #2D6A4F)' : '#C8963E',
-                    borderRadius: '3px 0 0 3px' }} />
-                  <span className="tl-year">{e.year}</span>
-                  <div className="tl-org">{e.org}</div>
-                  <div className="tl-role">{e.role}</div>
-                  <div className="tl-detail">{e.detail}</div>
-                  {i === 8 && (
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: '0.5rem',
-                      fontFamily: '"Manrope", system-ui, sans-serif', fontSize: '0.65rem',
-                      fontWeight: 600, color: '#2D6A4F', background: 'rgba(45,106,79,0.08)',
-                      padding: '0.2rem 0.6rem', borderRadius: 100, letterSpacing: '0.05em' }}>
-                      ● PRESENT
-                    </span>
-                  )}
-                </div>
-              </motion.div>
-            )
-          })}
-        </div>
+        {/* MILESTONE CARDS — absolutely positioned near each pin */}
+        {pins.map((pin, i) => {
+          const isLeft = pin.side === 'left'
+          // Left side card: positioned to the left of the right-side pin
+          // Right side card: positioned to the right of the left-side pin
+          const cardStyle: React.CSSProperties = {
+            position: 'absolute',
+            top: pin.y - 52,
+            zIndex: 2,
+            width: 268,
+            ...(isLeft
+              ? { right: `${920 - pin.x + 18}px` }
+              : { left: `${pin.x + 22}px` }),
+          }
+          // For center pin (item 8, x=460), position card to right
+          if (i === 8) {
+            cardStyle.left = `${pin.x + 22}px`
+            cardStyle.right = undefined
+          }
+
+          return (
+            <motion.div key={i} style={cardStyle}
+              initial={{ opacity: 0, x: isLeft ? 16 : -16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}>
+              <div style={{
+                background: 'white',
+                border: '1px solid rgba(0,0,0,0.07)',
+                borderRadius: 12,
+                padding: '1rem 1.25rem',
+                boxShadow: '0 4px 18px rgba(0,0,0,0.07)',
+                borderLeft: `3px solid ${pinColors[i]}`,
+                position: 'relative',
+              }}>
+                <span className="tl-year">{entries[i].year}</span>
+                <div className="tl-org">{entries[i].org}</div>
+                <div className="tl-role">{entries[i].role}</div>
+                <div className="tl-detail">{entries[i].detail}</div>
+                {i === 8 && (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: '0.5rem',
+                    fontFamily: '"Manrope", system-ui, sans-serif', fontSize: '0.62rem', fontWeight: 700,
+                    color: '#27AE60', background: 'rgba(39,174,96,0.08)', padding: '0.2rem 0.6rem',
+                    borderRadius: 100, letterSpacing: '0.08em' }}>
+                    ● PRESENT
+                  </span>
+                )}
+              </div>
+            </motion.div>
+          )
+        })}
       </div>
     </section>
   )
@@ -697,6 +800,64 @@ function ExperienceHighlights() {
 }
 
 /* ═══════════════════════════════════════════════════
+   BOOK A SESSION — CALENDLY PLACEHOLDER
+═══════════════════════════════════════════════════ */
+function BookSession() {
+  const { ref, visible } = useScrollReveal()
+  return (
+    <section id="book" className="section-pad" style={{ background: '#FAFAFA', borderTop: '1px solid rgba(0,0,0,0.06)' }} ref={ref}>
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 2rem', textAlign: 'center' }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
+          <div className="eyebrow" style={{ justifyContent: 'center' }}>Book a Session</div>
+          <h2 style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: 'clamp(2rem,3.5vw,3rem)',
+            fontWeight: 700, color: 'var(--text-1)', letterSpacing: '-0.02em', marginBottom: '1rem' }}>
+            Schedule a <span className="gold-text">Conversation</span>
+          </h2>
+          <p style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: '1.15rem',
+            color: 'var(--text-3)', marginBottom: '2.5rem', lineHeight: 1.7 }}>
+            Whether you need mentorship, career guidance, insurance advisory, or just a meaningful conversation —
+            Rathnavel is open to connecting.
+          </p>
+
+          {/* ── CALENDLY PLACEHOLDER ─────────────────────────
+              When you have your Calendly link, replace this div with:
+
+              <div className="calendly-inline-widget"
+                data-url="https://calendly.com/YOUR_USERNAME"
+                style={{ minWidth: 320, height: 700 }} />
+              <script src="https://assets.calendly.com/assets/external/widget.js" async />
+          ──────────────────────────────────────────────── */}
+          <div style={{
+            background: 'white',
+            border: '2px dashed rgba(200,150,62,0.3)',
+            borderRadius: 20,
+            padding: '4rem 2rem',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'
+          }}>
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}>
+              <Calendar size={48} color="rgba(200,150,62,0.5)" />
+            </motion.div>
+            <p style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '1.3rem',
+              color: 'var(--text-2)', margin: 0, fontWeight: 600 }}>
+              Calendly Booking Coming Soon
+            </p>
+            <p style={{ fontFamily: '"Manrope", system-ui, sans-serif', fontSize: '0.78rem',
+              color: 'var(--text-4)', letterSpacing: '0.08em', margin: 0 }}>
+              SHARE YOUR CALENDLY LINK TO ACTIVATE THIS SECTION
+            </p>
+            <a href="mailto:reavan@gmail.com" className="btn-primary" style={{ marginTop: '0.5rem' }}>
+              <Mail size={15} /> Email to Book Instead
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+/* ═══════════════════════════════════════════════════
    SOCIAL CONNECT
 ═══════════════════════════════════════════════════ */
 const PinterestIcon = () => (
@@ -767,10 +928,6 @@ function FinalCTA() {
               <Mail size={15} /> reavan@gmail.com
             </a>
           </div>
-          <p style={{ marginTop: '1.5rem', fontFamily: '"Manrope", system-ui, sans-serif',
-            fontSize: '0.72rem', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.08em' }}>
-            📅 Book a call — Calendly link coming soon
-          </p>
         </motion.div>
       </div>
     </section>
@@ -791,7 +948,7 @@ function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <div>
-          <div className="footer-name">Rathnavel Pon</div>
+          <div className="footer-name">Rathnavel Ponnuswami</div>
           <div className="footer-copy">© 2025 · rathnavelpon.in · All rights reserved</div>
         </div>
         <div className="footer-socials">
@@ -819,6 +976,7 @@ export default function App() {
         <Journey />
         <Pillars />
         <ExperienceHighlights />
+        <BookSession />
         <SocialConnect />
         <FinalCTA />
       </main>
