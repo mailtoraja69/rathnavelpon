@@ -208,7 +208,7 @@ function Navigation() {
       <div className="nav-inner">
         <a href="#home" className="nav-logo">
           <div className="nav-logo-badge"><span className="nav-logo-initials">RP</span></div>
-          <span className="nav-logo-name">Rathnavel Ponnuswami</span>
+          <span className="nav-logo-name">Rathnavel Pon</span>
         </a>
         <div className="nav-links">
           {links.map(l => <a key={l.label} href={l.href} className="nav-link">{l.label}</a>)}
@@ -292,7 +292,7 @@ function Hero() {
           <motion.p className="hero-sub"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.1 }}>
-            Rathnavel Ponnuswami brings together engineering education,
+            Rathnavel Pon brings together engineering education,
             environmental awareness, insurance advisory, and community
             service — a career dedicated to learning, guidance, and public impact.
           </motion.p>
@@ -311,7 +311,7 @@ function Hero() {
             initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}>
             {!imgError ? (
-              <img src="/rathnavel.jpg" alt="Rathnavel Ponnuswami" className="hero-photo"
+              <img src="/rathnavel.jpg" alt="Rathnavel Pon" className="hero-photo"
                 onError={() => setImgError(true)} />
             ) : (
               <div className="hero-photo-fallback"><span>RP</span></div>
@@ -490,7 +490,7 @@ function About() {
           animate={visible ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
           {!imgError ? (
-            <img src="/rathnavel.jpg" alt="Rathnavel Ponnuswami" className="about-photo"
+            <img src="/rathnavel.jpg" alt="Rathnavel Pon" className="about-photo"
               onError={() => setImgError(true)} />
           ) : (
             <div className="about-photo-fallback">RP</div>
@@ -791,7 +791,7 @@ function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <div>
-          <div className="footer-name">Rathnavel Ponnuswami</div>
+          <div className="footer-name">Rathnavel Pon</div>
           <div className="footer-copy">© 2025 · rathnavelpon.in · All rights reserved</div>
         </div>
         <div className="footer-socials">
