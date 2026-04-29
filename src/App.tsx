@@ -145,7 +145,7 @@ function Hero() {
           <motion.div initial={{ opacity: 0, x: 40, scale: 0.95 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="w-full lg:w-72 flex-shrink-0">
             <div className="rounded-2xl overflow-hidden border border-navy-800/10 shadow-xl">
-              <img src="/ai2.jpeg" alt="Rathnavel Ponnuswami" className="w-full h-[400px] object-cover object-top" />
+              <img src="/ai2.png" alt="Rathnavel Ponnuswami" className="w-full h-[400px] object-cover object-top" />
             </div>
             <div className="mt-4 bg-white rounded-xl px-5 py-4 border border-navy-800/8 shadow-sm">
               <p className="font-sans text-xs text-gold-700/70 tracking-wide text-center leading-relaxed">Organ Donor · A1B+ve · August Personality · Bilingual</p>
@@ -265,7 +265,7 @@ function About() {
           <motion.div initial={{ opacity: 0, x: 30 }} animate={visible ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }}
             className="flex flex-col gap-5">
             <div className="rounded-2xl overflow-hidden border border-navy-800/10 shadow-lg">
-              <img src="/ai2.jpeg" alt="Rathnavel Ponnuswami" className="w-full h-[380px] object-cover object-top" />
+              <img src="/ai1.png" alt="Rathnavel Ponnuswami" className="w-full h-[380px] object-cover object-top" />
             </div>
             <div className="bg-ivory-50 rounded-xl px-6 py-5 border border-navy-800/8">
               <p className="font-sans text-sm text-gold-700/75 tracking-wide text-center leading-relaxed">Organ Donor · A1B+ve · August Personality · Bilingual</p>
