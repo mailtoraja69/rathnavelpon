@@ -265,7 +265,7 @@ function About() {
           <motion.div initial={{ opacity: 0, x: 30 }} animate={visible ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }}
             className="flex flex-col gap-5">
             <div className="rounded-2xl overflow-hidden border border-navy-800/10 shadow-lg">
-              <img src="/ai1.png" alt="Rathnavel Ponnuswami" className="w-full h-[380px] object-cover object-top" />
+              <img src="/ai1.png" alt="Rathnavel Ponnuswami" className="w-full h-[550px] object-cover object-top" />
             </div>
             <div className="bg-ivory-50 rounded-xl px-6 py-5 border border-navy-800/8">
               <p className="font-sans text-sm text-gold-700/75 tracking-wide text-center leading-relaxed">Organ Donor · A1B+ve · August Personality · Bilingual</p>
