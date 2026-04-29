@@ -252,7 +252,7 @@ function About() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={visible ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
             <h2 className="font-display text-4xl text-navy-950 leading-tight mb-8">Coimbatore — Classrooms — Cricket</h2>
-            <p className="font-body text-xl text-navy-800/65 leading-loose mb-6">
+            <p className="font-body text-xl text-navy-800/45 leading-loose mb-6">
               A thorough Coimbatore person, Rathnavel was schooled at Carmel Garden and SBOA. He completed B.E. Civil Engineering from KCT and M.E. Environmental Engineering in GCT. He has two decades of experience in technical education with 8 engineering colleges. In parallel, he has emerged over five lustrums, as a facilitator for short non formal programmes. He has also had a short stint in environmental management and life insurance.
             </p>
             <p className="font-body text-xl text-navy-800/50 leading-loose mb-6">
