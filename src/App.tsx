@@ -1,81 +1,82 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
-import { Linkedin, Twitter, Instagram, Facebook, MapPin, ArrowRight, ChevronDown, ExternalLink, Menu, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Linkedin, Twitter, Instagram, Facebook, MapPin, ArrowRight, ExternalLink, Menu, X } from 'lucide-react'
 
-function useMouseParallax() {
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const springX = useSpring(mouseX, { stiffness: 40, damping: 20 })
-  const springY = useSpring(mouseY, { stiffness: 40, damping: 20 })
-  useEffect(() => {
-    const h = (e: MouseEvent) => {
-      mouseX.set((e.clientX - window.innerWidth / 2) / (window.innerWidth / 2))
-      mouseY.set((e.clientY - window.innerHeight / 2) / (window.innerHeight / 2))
-    }
-    window.addEventListener('mousemove', h)
-    return () => window.removeEventListener('mousemove', h)
-  }, [mouseX, mouseY])
-  return { springX, springY }
-}
-
-function useScrollReveal(threshold = 0.12) {
+/* ── Scroll reveal ── */
+function useReveal(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+  const [v, setV] = useState(false)
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold })
-    if (ref.current) obs.observe(ref.current)
-    return () => obs.disconnect()
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setV(true) }, { threshold })
+    if (ref.current) o.observe(ref.current)
+    return () => o.disconnect()
   }, [threshold])
-  return { ref, visible }
+  return { ref, v }
 }
 
-const doodles = [
-  { id: 'cap',  factor: 18,  delay: 0,   top: '12%', left: '6%',   opacity: 0.07,
-    svg: <svg viewBox="0 0 64 64" fill="none" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="72" height="72"><path d="M32 8 L60 22 L32 36 L4 22 Z"/><path d="M4 22 V40"/><path d="M16 28 V46 C16 52 48 52 48 46 V28"/><circle cx="4" cy="42" r="3"/></svg> },
-  { id: 'leaf', factor: -14, delay: 0.3, top: '22%', right: '7%',  opacity: 0.07,
-    svg: <svg viewBox="0 0 64 64" fill="none" stroke="#40916C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="64" height="64"><path d="M12 52 Q28 12 52 8 Q48 36 12 52Z"/><path d="M12 52 L36 28"/></svg> },
-  { id: 'pen',  factor: -10, delay: 0.8, top: '78%', left: '18%',  opacity: 0.06,
-    svg: <svg viewBox="0 0 64 64" fill="none" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="60" height="60"><path d="M44 8 L56 20 L22 54 L8 56 L10 42 Z"/><path d="M36 16 L48 28"/></svg> },
-  { id: 'gear', factor: 10,  delay: 1.2, top: '68%', right: '9%',  opacity: 0.06,
-    svg: <svg viewBox="0 0 64 64" fill="none" stroke="#40916C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="64" height="64"><circle cx="32" cy="32" r="12"/><circle cx="32" cy="32" r="5"/><path d="M32 8 L32 16 M32 48 L32 56 M8 32 L16 32 M48 32 L56 32"/></svg> },
-]
+const GOLD = '#C9A84C'
+const DARK = '#111827'
 
-/* ── Nav ── */
-function Navigation() {
+/* ── Pin SVG ── */
+function Pin({ color = GOLD, size = 28 }: { color?: string; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    </svg>
+  )
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+function Nav() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 60)
+    const h = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', h)
     return () => window.removeEventListener('scroll', h)
   }, [])
-  const links = [{ label: 'Home', href: '#home' }, { label: 'About', href: '#about' }, { label: 'Journey', href: '#journey' }, { label: 'Connect', href: '#connect' }]
+  const links = [
+    { label: 'Home', href: '#home' },
+    { label: 'About', href: '#about' },
+    { label: 'Journey', href: '#journey' },
+    { label: 'Connect', href: '#connect' },
+  ]
   return (
-    <motion.header initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'py-3 bg-white/90 backdrop-blur-md border-b border-navy-800/10 shadow-sm' : 'py-5 bg-transparent'}`}>
-      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
-        <a href="#home" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-md border border-gold-500/50 flex items-center justify-center bg-navy-900 group-hover:border-gold-500/80 transition-colors duration-300">
-            <span className="font-display text-sm font-semibold text-gold-400">RP</span>
+    <motion.header initial={{ y: -70 }} animate={{ y: 0 }} transition={{ duration: 0.6 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur shadow-sm border-b border-gray-100' : 'bg-transparent'}`}>
+      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
+        <a href="#home" className="flex items-center gap-2.5 group">
+          <div className="w-8 h-8 rounded bg-gray-900 flex items-center justify-center">
+            <span className="font-display text-xs font-bold" style={{ color: GOLD }}>RP</span>
           </div>
-          <span className="font-display text-navy-950 text-lg tracking-widest hidden sm:block uppercase font-semibold">Rathnavel Pon</span>
+          <span className="font-display text-gray-900 font-bold tracking-[0.15em] text-base uppercase hidden sm:block">Rathnavel Pon</span>
         </a>
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-7">
           {links.slice(0, 3).map(l => (
-            <a key={l.label} href={l.href} className="font-sans text-sm text-navy-800/60 hover:text-gold-600 transition-colors duration-300 tracking-wide">{l.label}</a>
+            <a key={l.label} href={l.href} className="font-sans text-sm text-gray-500 hover:text-gray-900 transition-colors tracking-wide">{l.label}</a>
           ))}
-          <a href="#connect" className="font-sans text-sm px-5 py-2 border border-gold-500/55 text-gold-700 rounded hover:bg-gold-500/10 transition-all duration-300 tracking-wide">Connect</a>
+          <a href="https://calendly.com/reavan/connect-with-rathnavel" target="_blank" rel="noopener noreferrer"
+            className="font-sans text-sm px-4 py-2 rounded border text-white transition-all duration-300"
+            style={{ backgroundColor: DARK, borderColor: DARK }}>
+            Book a Session
+          </a>
         </nav>
-        <button onClick={() => setOpen(!open)} className="md:hidden text-navy-800/70 p-1">{open ? <X size={22} /> : <Menu size={22} />}</button>
+        <button onClick={() => setOpen(!open)} className="md:hidden text-gray-700 p-1">{open ? <X size={20}/> : <Menu size={20}/>}</button>
       </div>
       <AnimatePresence>
         {open && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-navy-800/8 overflow-hidden shadow-md">
-            <nav className="flex flex-col px-6 py-4 gap-4">
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+            className="md:hidden bg-white border-t border-gray-100 overflow-hidden shadow-md">
+            <nav className="flex flex-col px-6 py-3 gap-3">
               {links.map(l => (
-                <a key={l.label} href={l.href} onClick={() => setOpen(false)} className="font-sans text-sm text-navy-800/70 hover:text-gold-600 transition-colors py-1">{l.label}</a>
+                <a key={l.label} href={l.href} onClick={() => setOpen(false)}
+                  className="font-sans text-sm text-gray-700 hover:text-yellow-700 py-1 border-b border-gray-50 last:border-0">{l.label}</a>
               ))}
+              <a href="https://calendly.com/reavan/connect-with-rathnavel" target="_blank" rel="noopener noreferrer"
+                className="font-sans text-sm font-semibold text-white text-center py-2.5 rounded mt-1"
+                style={{ backgroundColor: DARK }}>Book a Session</a>
             </nav>
           </motion.div>
         )}
@@ -84,113 +85,109 @@ function Navigation() {
   )
 }
 
-/* ── Hero ── */
+/* ══════════════════════════════════════════
+   HERO  (white bg)
+══════════════════════════════════════════ */
 function Hero() {
-  const { springX, springY } = useMouseParallax()
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDFAF4 0%, #F8F1E3 60%, #F2E6CC55 100%)' }}>
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 right-1/4 w-[600px] h-[500px] bg-gold-300/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-600/5 rounded-full blur-[100px]" />
-      </div>
-      <div className="absolute inset-0 z-0 pointer-events-none hidden lg:block">
-        {doodles.map(d => {
-          const x = useTransform(springX, v => v * d.factor)
-          const y = useTransform(springY, v => v * d.factor)
-          return (
-            <motion.div key={d.id} style={{ x, y, opacity: d.opacity, position: 'absolute', top: d.top, left: (d as any).left, right: (d as any).right }}
-              initial={{ opacity: 0 }} animate={{ opacity: d.opacity }} transition={{ delay: d.delay + 0.5, duration: 1.2 }}>
-              {d.svg}
-            </motion.div>
-          )
-        })}
-      </div>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
+    <section id="home" className="min-h-screen flex items-center bg-white pt-16">
+      <div className="max-w-6xl mx-auto px-6 py-16 w-full">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-28 pb-24 w-full">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-12 lg:gap-20">
+          {/* Left */}
           <div className="flex-1">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }}
-              className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-gold-500/30 bg-gold-500/8 flex-wrap">
-              <MapPin size={12} className="text-gold-600 flex-shrink-0" />
-              <span className="font-sans text-xs text-gold-700/80 tracking-widest uppercase">Coimbatore · Tamil Nadu · India · Asia · Earth · Milky Way</span>
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border text-xs font-sans tracking-widest uppercase"
+              style={{ borderColor: GOLD + '44', color: GOLD, backgroundColor: GOLD + '0D' }}>
+              <MapPin size={10}/> Coimbatore · Tamil Nadu · India · Asia · Earth · Milky Way
             </motion.div>
 
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display text-5xl sm:text-6xl lg:text-7xl text-navy-950 leading-[1.08] mb-6">
-              Facilitator.{' '}<em className="text-gold-gradient not-italic">Educator.</em><br />
-              <span className="text-navy-800/55">Writer.</span>
+            <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}
+              className="font-display text-5xl sm:text-6xl xl:text-7xl leading-[1.06] font-bold text-gray-900 mb-5">
+              Facilitator.<br/>
+              <span className="gold-text">Educator.</span><br/>
+              <span className="text-gray-400">Writer.</span>
             </motion.h1>
 
-            <motion.p initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.8 }}
-              className="font-body text-xl text-navy-800/55 leading-relaxed max-w-xl mb-10">
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }}
+              className="font-body text-lg text-gray-500 leading-relaxed max-w-lg mb-8">
               A facilitator for short learning sessions, activity based learning and quiz competitions.
-              An educator formally and normally engaged in teaching Civil Engineering.
+              An educator formally engaged in teaching Civil Engineering.
               A writer with adequate intelligence to compete with Artificial Intelligence.
             </motion.p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.7 }} className="flex flex-wrap gap-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+              className="flex flex-wrap gap-3">
               <a href="https://www.linkedin.com/in/reavan/" target="_blank" rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-navy-900 hover:bg-navy-800 text-white font-sans font-semibold text-sm tracking-wide rounded transition-all duration-300 hover:shadow-lg">
-                <Linkedin size={16} />Connect on LinkedIn<ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                className="inline-flex items-center gap-2 px-6 py-3 rounded font-sans font-semibold text-sm text-white transition-all hover:opacity-90"
+                style={{ backgroundColor: DARK }}>
+                <Linkedin size={15}/> Connect on LinkedIn <ArrowRight size={13}/>
               </a>
-              <a href="#programmes"
-                className="group inline-flex items-center gap-2.5 px-7 py-3.5 border border-gold-500/50 text-gold-700 hover:bg-gold-500/8 font-sans text-sm tracking-wide rounded transition-all duration-300">
-                Book a Session<ChevronDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
+              <a href="https://calendly.com/reavan/connect-with-rathnavel" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded font-sans text-sm border-2 transition-all hover:bg-yellow-50"
+                style={{ borderColor: GOLD, color: GOLD }}>
+                📅 Book a Session
               </a>
             </motion.div>
           </div>
 
-          <motion.div initial={{ opacity: 0, x: 40, scale: 0.95 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ delay: 0.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full lg:w-72 flex-shrink-0">
-            <div className="rounded-2xl overflow-hidden border border-navy-800/10 shadow-xl">
-              <img src="/ai2.png" alt="Rathnavel Ponnuswami" className="w-full h-[400px] object-cover object-top" />
-            </div>
-            <div className="mt-4 bg-white rounded-xl px-5 py-4 border border-navy-800/8 shadow-sm">
-              <p className="font-sans text-xs text-gold-700/70 tracking-wide text-center leading-relaxed">Organ Donor · A1B+ve · August Personality · Bilingual</p>
-              <div className="h-px bg-navy-800/8 my-2" />
-              <p className="font-sans text-xs text-navy-800/35 tracking-wide text-center leading-relaxed">Not so voracious Reader · More than Usual Movie Viewer</p>
+          {/* Right: Photo with overlaid tag */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.9 }}
+            className="w-full lg:w-80 flex-shrink-0">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <img src="/ai2.png" alt="Rathnavel Ponnuswami" className="w-full h-[460px] object-cover object-top"/>
+              {/* Overlay tag at bottom of photo */}
+              <div className="absolute bottom-0 left-0 right-0 px-5 py-4"
+                style={{ background: 'linear-gradient(to top, rgba(17,24,39,0.92) 0%, transparent 100%)' }}>
+                <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
+                  <span className="text-white/90 text-xs font-sans">🫀 Organ Donor</span>
+                  <span className="text-white/40 text-xs">·</span>
+                  <span className="text-white/90 text-xs font-sans">🩸 A1B+ve</span>
+                  <span className="text-white/40 text-xs">·</span>
+                  <span className="text-white/90 text-xs font-sans">♌ August Born</span>
+                  <span className="text-white/40 text-xs">·</span>
+                  <span className="text-white/90 text-xs font-sans">🗣️ Bilingual</span>
+                </div>
+                <div className="h-px bg-white/10 my-2"/>
+                <p className="text-white/45 text-xs font-sans text-center">📖 Not so voracious Reader &nbsp;·&nbsp; 🎬 More than Usual Movie Viewer</p>
+              </div>
             </div>
           </motion.div>
         </div>
-
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span className="font-sans text-xs text-navy-800/25 tracking-widest uppercase">Scroll</span>
-          <motion.div animate={{ y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-            className="w-px h-8 bg-gradient-to-b from-gold-500/40 to-transparent" />
-        </motion.div>
       </div>
     </section>
   )
 }
 
-/* ── Programmes ── */
+/* ══════════════════════════════════════════
+   PROGRAMMES  (dark bg)
+══════════════════════════════════════════ */
 const programmes = [
-  { code: 'SAFE',  audience: 'For 1st Year Engineering Students',           emoji: '🎓', color: 'gold' },
-  { code: 'PESA',  audience: 'For 1st Year Arts / Sciences / Law Students',  emoji: '📚', color: 'emerald' },
-  { code: 'SIMBA', audience: 'For MBA Students',                             emoji: '💼', color: 'gold' },
-  { code: 'TACT',  audience: 'For Young Professionals',                      emoji: '🚀', color: 'emerald' },
+  { code: 'SAFE',  sub: '1st Year Engineering',        emoji: '🎓' },
+  { code: 'PESA',  sub: '1st Year Arts / Sciences / Law', emoji: '📚' },
+  { code: 'SIMBA', sub: 'MBA Students',                emoji: '💼' },
+  { code: 'TACT',  sub: 'Young Professionals',         emoji: '🚀' },
 ]
 function Programmes() {
-  const { ref, visible } = useScrollReveal()
+  const { ref, v } = useReveal()
   return (
-    <section id="programmes" ref={ref} className="py-16 border-y border-navy-800/8 bg-white">
+    <section id="programmes" ref={ref} className="py-16" style={{ backgroundColor: DARK }}>
       <div className="max-w-6xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          className="flex items-center justify-center gap-3 mb-10">
-          <div className="h-px w-8 bg-gold-500/40" />
-          <span className="font-sans text-xs text-gold-600/70 tracking-widest uppercase">Exclusive Programmes</span>
-          <div className="h-px w-8 bg-gold-500/40" />
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}
+          className="flex items-center gap-3 justify-center mb-10">
+          <div className="h-px w-8" style={{ backgroundColor: GOLD + '60' }}/>
+          <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>Exclusive Programmes</span>
+          <div className="h-px w-8" style={{ backgroundColor: GOLD + '60' }}/>
         </motion.div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {programmes.map((p, i) => (
-            <motion.div key={p.code} initial={{ opacity: 0, y: 20 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="rounded-xl p-6 flex flex-col items-center text-center border border-navy-800/8 hover:border-gold-500/40 bg-ivory-50 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md cursor-default">
+            <motion.div key={p.code}
+              initial={{ opacity: 0, y: 20 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1, duration: 0.5 }}
+              className="rounded-xl p-6 text-center border border-white/8 hover:-translate-y-1 transition-all duration-300 cursor-default"
+              style={{ backgroundColor: '#1f2937' }}>
               <div className="text-3xl mb-3">{p.emoji}</div>
-              <div className={`font-display text-2xl font-bold mb-2 ${p.color === 'emerald' ? 'text-emerald-700' : 'text-gold-600'}`}>{p.code}</div>
-              <div className="font-sans text-xs text-navy-800/50 leading-snug">{p.audience}</div>
+              <div className="font-display text-2xl font-bold mb-1 gold-text">{p.code}</div>
+              <div className="font-sans text-xs text-white/45 leading-snug">{p.sub}</div>
             </motion.div>
           ))}
         </div>
@@ -199,37 +196,40 @@ function Programmes() {
   )
 }
 
-/* ── Stats ── */
+/* ══════════════════════════════════════════
+   STATS  (white bg)
+══════════════════════════════════════════ */
 const stats = [
-  { value: '100+',    label: 'Quizzes',             emoji: '🎤' },
-  { value: '200+',    label: 'Sessions',             emoji: '🏫' },
-  { value: '300+',    label: 'MoCs',                 emoji: '🎙️' },
-  { value: '10,000+', label: 'Participants',          emoji: '👥' },
-  { value: '26',      label: 'Years in Facilitation', emoji: '⏳' },
+  { value: '100+',    label: 'Quizzes',              emoji: '🎤' },
+  { value: '200+',    label: 'Sessions',              emoji: '🏫' },
+  { value: '300+',    label: 'MoCs',                  emoji: '🎙️' },
+  { value: '10,000+', label: 'Participants',           emoji: '👥' },
+  { value: '26',      label: 'Years in Facilitation',  emoji: '⏳' },
 ]
 function Stats() {
-  const { ref, visible } = useScrollReveal()
+  const { ref, v } = useReveal()
   return (
-    <section ref={ref} className="section-pad bg-ivory-50">
+    <section ref={ref} className="py-16 bg-white border-y border-gray-100">
       <div className="max-w-6xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4 mb-14">
+        <motion.div initial={{ opacity: 0, y: 14 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}
+          className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3 mb-10">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="h-px w-8 bg-gold-500/40" />
-              <span className="font-sans text-xs text-gold-600/70 tracking-widest uppercase">Number Crunching</span>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="h-px w-6" style={{ backgroundColor: GOLD }}/>
+              <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>Number Crunching</span>
             </div>
-            <h2 className="font-display text-4xl text-navy-950">Impact in Numbers</h2>
+            <h2 className="font-display text-3xl font-bold text-gray-900">Impact in Numbers</h2>
           </div>
-          <p className="font-display text-2xl text-gold-600/45 italic">Coimbatore — Classrooms — Cricket</p>
+          <p className="font-display text-xl italic" style={{ color: GOLD }}>Coimbatore — Classrooms — Cricket</p>
         </motion.div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {stats.map((s, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 24 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="bg-white rounded-xl p-6 text-center border border-navy-800/8 hover:border-gold-500/35 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-default">
-              <div className="text-2xl mb-3">{s.emoji}</div>
-              <div className="font-display text-3xl font-bold text-gold-600 mb-1">{s.value}</div>
-              <div className="font-sans text-xs text-navy-800/45 tracking-wide uppercase leading-snug">{s.label}</div>
+            <motion.div key={i}
+              initial={{ opacity: 0, y: 20 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="rounded-xl p-5 text-center border border-gray-100 hover:border-yellow-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+              <div className="text-xl mb-2">{s.emoji}</div>
+              <div className="font-display text-2xl font-bold mb-0.5" style={{ color: GOLD }}>{s.value}</div>
+              <div className="font-sans text-xs text-gray-400 tracking-wide uppercase leading-tight">{s.label}</div>
             </motion.div>
           ))}
         </div>
@@ -238,39 +238,49 @@ function Stats() {
   )
 }
 
-/* ── About ── */
+/* ══════════════════════════════════════════
+   ABOUT  (dark bg)
+══════════════════════════════════════════ */
 function About() {
-  const { ref, visible } = useScrollReveal()
+  const { ref, v } = useReveal()
   return (
-    <section id="about" ref={ref} className="section-pad bg-white">
+    <section id="about" ref={ref} className="py-16" style={{ backgroundColor: DARK }}>
       <div className="max-w-6xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          className="flex items-center gap-3 mb-12">
-          <div className="h-px w-8 bg-gold-500/40" />
-          <span className="font-sans text-xs text-gold-600/70 tracking-widest uppercase">About</span>
+        <motion.div initial={{ opacity: 0 }} animate={v ? { opacity: 1 } : {}} transition={{ duration: 0.5 }}
+          className="flex items-center gap-2 mb-10">
+          <div className="h-px w-6" style={{ backgroundColor: GOLD }}/>
+          <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>About</span>
         </motion.div>
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={visible ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
-            <h2 className="font-display text-4xl text-navy-950 leading-tight mb-8">Coimbatore — Classrooms — Cricket</h2>
-            <p className="font-body text-xl text-navy-800/45 leading-loose mb-6">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+          <motion.div initial={{ opacity: 0, x: -24 }} animate={v ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
+            <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
+              Coimbatore —<br/>Classrooms — Cricket
+            </h2>
+            <p className="font-body text-lg text-white/60 leading-loose mb-4">
               A thorough Coimbatore person, Rathnavel was schooled at Carmel Garden and SBOA. He completed B.E. Civil Engineering from KCT and M.E. Environmental Engineering in GCT. He has two decades of experience in technical education with 8 engineering colleges. In parallel, he has emerged over five lustrums, as a facilitator for short non formal programmes. He has also had a short stint in environmental management and life insurance.
             </p>
-            <p className="font-body text-xl text-navy-800/50 leading-loose mb-6">
+            <p className="font-body text-lg text-white/45 leading-loose mb-4">
               Rathnavel is a part of the lovely RATHNA KUNJARAM family. His social tryst is courtesy Rotary International, Senior Chamber International, Institute of Liberal Studies and Institution of Engineers (India).
             </p>
-            <p className="font-body text-xl text-navy-800/50 leading-loose">
+            <p className="font-body text-lg text-white/45 leading-loose">
               His life goal is to interact with youngsters and enhance their knowledge, skills, innovation and attitude. He plans to contribute to better waste management and urban development practices in Coimbatore. His interests are Indian Cricket, Tamil Cinema and Learning Innovations.
             </p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={visible ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }}
-            className="flex flex-col gap-5">
-            <div className="rounded-2xl overflow-hidden border border-navy-800/10 shadow-lg">
-              <img src="/ai1.png" alt="Rathnavel Ponnuswami" className="w-full h-[550px] object-cover object-top" />
-            </div>
-            <div className="bg-ivory-50 rounded-xl px-6 py-5 border border-navy-800/8">
-              <p className="font-sans text-sm text-gold-700/75 tracking-wide text-center leading-relaxed">Organ Donor · A1B+ve · August Personality · Bilingual</p>
-              <div className="h-px bg-navy-800/8 my-3" />
-              <p className="font-sans text-sm text-navy-800/35 tracking-wide text-center leading-relaxed">Not so voracious Reader · More than Usual Movie Viewer</p>
+
+          <motion.div initial={{ opacity: 0, x: 24 }} animate={v ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.15, duration: 0.6 }}
+            className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <img src="/ai1.png" alt="Rathnavel Ponnuswami" className="w-full h-[550px] object-cover object-top"/>
+            <div className="absolute bottom-0 left-0 right-0 px-5 py-4"
+              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%)' }}>
+              <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
+                <span className="text-white/90 text-xs font-sans">🫀 Organ Donor</span>
+                <span className="text-white/30 text-xs">·</span>
+                <span className="text-white/90 text-xs font-sans">🩸 A1B+ve</span>
+                <span className="text-white/30 text-xs">·</span>
+                <span className="text-white/90 text-xs font-sans">♌ August Born</span>
+                <span className="text-white/30 text-xs">·</span>
+                <span className="text-white/90 text-xs font-sans">🗣️ Bilingual</span>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -279,58 +289,68 @@ function About() {
   )
 }
 
-/* ── Journey ── */
-const timelineItems = [
-  { year: '2001', role: 'Freelance Trainer',   org: 'MoC · Non Formal Learning · Quizzes',               color: 'gold' },
-  { year: '2004', role: 'Lecturer',            org: 'Hindusthan College of Engineering and Technology',   color: 'gold' },
-  { year: '2005', role: 'Lecturer',            org: 'Tamilnadu College of Engineering',                   color: 'gold' },
-  { year: '2006', role: 'Chief Executive',     org: 'ECO-TECH',                                           color: 'emerald' },
-  { year: '2007', role: 'Lecturer',            org: 'SNS College of Engineering',                         color: 'gold' },
-  { year: '2008', role: 'Lecturer',            org: 'Adithya Institute of Technology',                    color: 'gold' },
-  { year: '2009', role: 'Assistant Professor', org: 'Kalaivani College of Technology',                    color: 'gold' },
-  { year: '2011', role: 'Assistant Professor', org: 'KTVR Knowledge Park for Engineering and Technology', color: 'gold' },
-  { year: '2013', role: 'Assistant Professor', org: 'Coimbatore Institute of Engineering and Technology', color: 'gold' },
-  { year: '2015', role: 'Assistant Professor', org: 'Akshaya College of Engineering and Technology',      color: 'gold' },
-  { year: '2019', role: 'Apex Person',         org: 'Nicety Shelters and Solutions',                      color: 'emerald' },
-  { year: '2020', role: 'Financial Advisor',   org: 'ICICI Prudential',                                   color: 'gold' },
+/* ══════════════════════════════════════════
+   JOURNEY  — sketch roadmap with pins
+══════════════════════════════════════════ */
+const timeline = [
+  { year: '2001', role: 'Freelance Trainer',   org: 'MoC · Non Formal Learning · Quizzes',               pin: '#E53E3E' },
+  { year: '2004', role: 'Lecturer',            org: 'Hindusthan College of Engineering and Technology',   pin: GOLD },
+  { year: '2005', role: 'Lecturer',            org: 'Tamilnadu College of Engineering',                   pin: GOLD },
+  { year: '2006', role: 'Chief Executive',     org: 'ECO-TECH',                                           pin: '#38A169' },
+  { year: '2007', role: 'Lecturer',            org: 'SNS College of Engineering',                         pin: GOLD },
+  { year: '2008', role: 'Lecturer',            org: 'Adithya Institute of Technology',                    pin: GOLD },
+  { year: '2009', role: 'Assistant Professor', org: 'Kalaivani College of Technology',                    pin: GOLD },
+  { year: '2011', role: 'Assistant Professor', org: 'KTVR Knowledge Park for Engg. & Technology',         pin: GOLD },
+  { year: '2013', role: 'Assistant Professor', org: 'Coimbatore Institute of Engg. and Technology',       pin: GOLD },
+  { year: '2015', role: 'Assistant Professor', org: 'Akshaya College of Engineering and Technology',      pin: GOLD },
+  { year: '2019', role: 'Apex Person',         org: 'Nicety Shelters and Solutions',                      pin: '#38A169' },
+  { year: '2020', role: 'Financial Advisor',   org: 'ICICI Prudential',                                   pin: '#E53E3E' },
 ]
+
 function Journey() {
-  const { ref, visible } = useScrollReveal(0.05)
+  const { ref, v } = useReveal(0.05)
   return (
-    <section id="journey" ref={ref} className="section-pad bg-ivory-50">
+    <section id="journey" ref={ref} className="py-16 bg-white">
       <div className="max-w-3xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}
-          className="text-center mb-16">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-8 bg-gold-500/40" />
-            <span className="font-sans text-xs text-gold-600/70 tracking-widest uppercase">Timeline</span>
-            <div className="h-px w-8 bg-gold-500/40" />
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          className="text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="h-px w-10" style={{ backgroundColor: GOLD + '50' }}/>
+            <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>The Journey</span>
+            <div className="h-px w-10" style={{ backgroundColor: GOLD + '50' }}/>
           </div>
-          <h2 className="font-display text-4xl lg:text-5xl text-navy-950">Professional Journey</h2>
+          <h2 className="font-display text-4xl lg:text-5xl font-bold text-gray-900">
+            26 Years, <span className="gold-text">One Direction</span>
+          </h2>
+          <p className="font-body text-gray-400 mt-2 text-lg">Each pin marks a chapter. Follow the road.</p>
         </motion.div>
+
+        {/* Road map list */}
         <div className="relative">
-          <div className="absolute left-[19px] top-4 bottom-4 w-px bg-gradient-to-b from-gold-500/30 via-emerald-600/20 to-transparent hidden sm:block" />
-          <div className="flex flex-col">
-            {timelineItems.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={visible ? { opacity: 1, x: 0 } : {}}
-                transition={{ delay: i * 0.07, duration: 0.6 }}
-                className="flex gap-6 sm:pl-14 relative group pb-10 last:pb-0">
-                <div className={`absolute left-[10px] top-5 w-[20px] h-[20px] rounded-full border-2 hidden sm:flex items-center justify-center flex-shrink-0
-                  ${item.color === 'emerald' ? 'border-emerald-600/50 bg-emerald-50' : 'border-gold-500/50 bg-gold-50'}
-                  transition-all duration-300 group-hover:scale-125`}>
-                  <div className={`w-2 h-2 rounded-full ${item.color === 'emerald' ? 'bg-emerald-500' : 'bg-gold-500'}`} />
+          {/* Vertical dashed road line */}
+          <div className="absolute left-[13px] top-3 bottom-3 w-[2px] hidden sm:block"
+            style={{ background: 'repeating-linear-gradient(to bottom, #D4AA5044 0px, #D4AA5044 8px, transparent 8px, transparent 16px)' }}/>
+
+          <div className="space-y-5">
+            {timeline.map((item, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, x: -18 }} animate={v ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: i * 0.06, duration: 0.5 }}
+                className="flex items-start gap-4 group">
+                {/* Pin */}
+                <div className="flex-shrink-0 mt-1 hidden sm:block">
+                  <Pin color={item.pin} size={28}/>
                 </div>
-                <div className="flex-1 bg-white rounded-xl px-6 py-5 border border-navy-800/8 hover:border-gold-500/30 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div className="font-display text-xl text-navy-950 font-semibold leading-tight">{item.role}</div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-sans tracking-widest flex-shrink-0
-                      ${item.color === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gold-50 text-gold-700 border border-gold-200'}`}>
+                {/* Card */}
+                <div className="flex-1 rounded-xl px-5 py-4 border border-gray-100 hover:border-yellow-200 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 bg-white">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="font-display text-lg font-bold text-gray-900">{item.role}</div>
+                    <span className="font-sans text-xs px-2.5 py-0.5 rounded-full border font-semibold"
+                      style={{ color: item.pin, borderColor: item.pin + '40', backgroundColor: item.pin + '12' }}>
                       {item.year}
                     </span>
                   </div>
-                  <div className={`font-sans text-sm mt-1.5 leading-snug ${item.color === 'emerald' ? 'text-emerald-700/60' : 'text-gold-600/60'}`}>
-                    {item.org}
-                  </div>
+                  <div className="font-sans text-sm text-gray-400 mt-0.5">{item.org}</div>
                 </div>
               </motion.div>
             ))}
@@ -341,7 +361,9 @@ function Journey() {
   )
 }
 
-/* ── Advisory ── */
+/* ══════════════════════════════════════════
+   ADVISORY  (dark bg)
+══════════════════════════════════════════ */
 const advisoryClients = [
   { name: 'SDS Land Surveyors',              url: 'https://www.sdslandsurveyor.com/',                                               abbr: 'SDS' },
   { name: 'Prajai Times',                    url: 'http://prajaitimes.in',                                                           abbr: 'PT'  },
@@ -349,34 +371,35 @@ const advisoryClients = [
   { name: 'Elite Construction & Architects', url: 'https://www.facebook.com/people/Elite-Construction-And-Architects/61571073511891/', abbr: 'EC'  },
 ]
 function Advisory() {
-  const { ref, visible } = useScrollReveal()
+  const { ref, v } = useReveal()
   return (
-    <section id="work" ref={ref} className="section-pad bg-white">
+    <section id="work" ref={ref} className="py-16" style={{ backgroundColor: DARK }}>
       <div className="max-w-6xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          className="text-center mb-14">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-10 bg-gold-500/35" />
-            <span className="font-sans text-xs text-gold-600/60 tracking-widest uppercase">Advisory Role</span>
-            <div className="h-px w-10 bg-gold-500/35" />
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}
+          className="text-center mb-10">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="h-px w-8" style={{ backgroundColor: GOLD + '55' }}/>
+            <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>Advisory Role</span>
+            <div className="h-px w-8" style={{ backgroundColor: GOLD + '55' }}/>
           </div>
-          <h2 className="font-display text-4xl lg:text-5xl text-navy-950 mb-4">Organisations He Advises</h2>
-          <p className="font-body text-xl text-navy-800/45 max-w-xl mx-auto">Providing strategic guidance and domain expertise to growing organisations across sectors.</p>
+          <h2 className="font-display text-3xl lg:text-4xl font-bold text-white">Organisations He Advises</h2>
+          <p className="font-body text-lg text-white/40 mt-2">Logos coming soon — click to visit each organisation.</p>
         </motion.div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {advisoryClients.map((c, i) => (
             <motion.a key={i} href={c.url} target="_blank" rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 28 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.15, duration: 0.65 }}
-              className="group flex flex-col items-center justify-center gap-4 p-8 rounded-2xl border border-navy-800/10 hover:border-gold-500/40 bg-ivory-50 hover:bg-white shadow-sm hover:shadow-lg transition-all duration-300">
-              {/* Replace div below with <img src="/logo-xxx.png" alt="..." className="w-20 h-20 object-contain" /> when logos are ready */}
-              <div className="w-20 h-20 rounded-xl bg-navy-900/5 border border-navy-800/10 flex items-center justify-center group-hover:scale-105 group-hover:border-gold-500/30 transition-all duration-300">
-                <span className="font-display text-xl font-bold text-navy-800/35 group-hover:text-gold-600 transition-colors">{c.abbr}</span>
+              initial={{ opacity: 0, y: 24 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.12, duration: 0.5 }}
+              className="group flex flex-col items-center justify-center gap-3 p-6 rounded-xl border border-white/8 hover:border-yellow-500/40 transition-all duration-300 hover:-translate-y-1"
+              style={{ backgroundColor: '#1f2937' }}>
+              {/* Logo placeholder — replace span with <img src="/logo-sds.png" ...> when logos arrive */}
+              <div className="w-16 h-16 rounded-lg border border-white/10 flex items-center justify-center group-hover:border-yellow-500/30 transition-all">
+                <span className="font-display text-lg font-bold text-white/30 group-hover:text-yellow-400 transition-colors">{c.abbr}</span>
               </div>
               <div className="text-center">
-                <div className="font-display text-base text-navy-900 font-semibold leading-tight group-hover:text-gold-700 transition-colors">{c.name}</div>
-                <div className="flex items-center justify-center gap-1 mt-2">
-                  <ExternalLink size={11} className="text-navy-800/25 group-hover:text-gold-500 transition-colors" />
-                  <span className="font-sans text-xs text-navy-800/25 group-hover:text-gold-500 transition-colors">Visit</span>
+                <div className="font-display text-sm text-white/80 font-semibold leading-tight group-hover:text-yellow-300 transition-colors">{c.name}</div>
+                <div className="flex items-center justify-center gap-1 mt-1.5">
+                  <ExternalLink size={10} className="text-white/25 group-hover:text-yellow-400 transition-colors"/>
+                  <span className="font-sans text-xs text-white/25 group-hover:text-yellow-400 transition-colors">Visit</span>
                 </div>
               </div>
             </motion.a>
@@ -387,56 +410,62 @@ function Advisory() {
   )
 }
 
-/* ── Social Connect ── */
+/* ══════════════════════════════════════════
+   CONNECT  (white bg)
+══════════════════════════════════════════ */
 const socials = [
   { name: 'LinkedIn',    handle: 'reavan',       url: 'https://www.linkedin.com/in/reavan/',
-    icon: <Linkedin size={22} />, desc: 'For professional updates and purposeful writing', color: '#0A66C2' },
+    icon: <Linkedin size={20}/>, desc: 'Professional updates and purposeful writing', color: '#0A66C2' },
   { name: 'X / Twitter', handle: '@reavan',      url: 'https://x.com/reavan',
-    icon: <Twitter size={22} />, desc: 'For cricket related stats and rants', color: '#1D9BF0' },
+    icon: <Twitter size={20}/>, desc: 'Cricket related stats and rants', color: '#1D9BF0' },
   { name: 'Threads',     handle: '@reavan1881',  url: 'https://www.threads.com/@reavan1881',
-    icon: <svg viewBox="0 0 192 192" width="22" height="22" fill="currentColor"><path d="M141.537 88.988a66.667 66.667 0 0 0-2.518-1.143c-1.482-27.307-16.403-42.94-41.457-43.1h-.34c-14.968 0-27.414 6.396-35.012 18.035l13.77 9.452c5.665-8.618 14.553-10.452 21.244-10.452h.23c8.209.054 14.415 2.456 18.452 7.145 2.904 3.374 4.845 8.04 5.798 13.955-7.258-1.233-15.104-1.609-23.502-1.122-23.65 1.361-38.857 15.2-37.83 34.416.522 9.765 5.267 18.167 13.35 23.59 6.832 4.658 15.629 6.99 24.8 6.5 12.07-.65 21.556-5.273 28.186-13.72 5.09-6.513 8.301-14.968 9.716-25.676 5.823 3.514 10.132 8.138 12.487 13.66 4.098 9.569 4.344 25.285-8.503 38.117-11.275 11.26-24.847 16.14-45.32 16.29-22.71-.168-39.904-7.452-51.103-21.656C52.36 138.85 47 122.364 46.734 101.963c.266-20.4 5.627-36.89 15.929-49.01 11.199-14.204 28.393-21.489 51.103-21.656 22.31.168 38.842 7.484 49.156 21.756 5.047 6.99 8.713 15.816 10.943 26.253l16.02-3.86c-2.677-12.075-7.222-22.63-13.587-31.498-13.703-18.983-34.262-28.72-61.077-28.946h-.418c-26.522.226-46.907 10.033-60.657 29.164C43.035 57.336 37.04 76.658 36.748 101.963v.075c.292 25.305 6.287 44.628 17.821 57.463 13.75 19.13 34.135 28.938 60.657 29.163h.418c23.591-.198 40.245-6.393 53.817-20.177 17.797-17.808 17.072-39.923 11.291-53.585-4.192-9.798-12.315-17.86-38.215-25.914Z"/><path d="M96.754 113.447c-9.26.527-18.977-3.634-19.466-11.94-.347-6.067 4.28-12.753 20.295-13.678 1.903-.11 3.764-.162 5.583-.159 6.388.015 12.408.657 17.947 1.906-2.044 25.48-15.147 23.322-24.359 23.871Z"/></svg>,
-    desc: 'For micro movie reviews', color: '#000000' },
+    icon: (
+      <svg viewBox="0 0 192 192" width="20" height="20" fill="currentColor">
+        <path d="M141.537 88.988a66.667 66.667 0 0 0-2.518-1.143c-1.482-27.307-16.403-42.94-41.457-43.1h-.34c-14.968 0-27.414 6.396-35.012 18.035l13.77 9.452c5.665-8.618 14.553-10.452 21.244-10.452h.23c8.209.054 14.415 2.456 18.452 7.145 2.904 3.374 4.845 8.04 5.798 13.955-7.258-1.233-15.104-1.609-23.502-1.122-23.65 1.361-38.857 15.2-37.83 34.416.522 9.765 5.267 18.167 13.35 23.59 6.832 4.658 15.629 6.99 24.8 6.5 12.07-.65 21.556-5.273 28.186-13.72 5.09-6.513 8.301-14.968 9.716-25.676 5.823 3.514 10.132 8.138 12.487 13.66 4.098 9.569 4.344 25.285-8.503 38.117-11.275 11.26-24.847 16.14-45.32 16.29-22.71-.168-39.904-7.452-51.103-21.656C52.36 138.85 47 122.364 46.734 101.963c.266-20.4 5.627-36.89 15.929-49.01 11.199-14.204 28.393-21.489 51.103-21.656 22.31.168 38.842 7.484 49.156 21.756 5.047 6.99 8.713 15.816 10.943 26.253l16.02-3.86c-2.677-12.075-7.222-22.63-13.587-31.498-13.703-18.983-34.262-28.72-61.077-28.946h-.418c-26.522.226-46.907 10.033-60.657 29.164C43.035 57.336 37.04 76.658 36.748 101.963v.075c.292 25.305 6.287 44.628 17.821 57.463 13.75 19.13 34.135 28.938 60.657 29.163h.418c23.591-.198 40.245-6.393 53.817-20.177 17.797-17.808 17.072-39.923 11.291-53.585-4.192-9.798-12.315-17.86-38.215-25.914Z"/>
+        <path d="M96.754 113.447c-9.26.527-18.977-3.634-19.466-11.94-.347-6.067 4.28-12.753 20.295-13.678 1.903-.11 3.764-.162 5.583-.159 6.388.015 12.408.657 17.947 1.906-2.044 25.48-15.147 23.322-24.359 23.871Z"/>
+      </svg>
+    ), desc: 'Micro movie reviews', color: '#000000' },
   { name: 'QOTD Blog',   handle: 'qotd2026',    url: 'https://qotd2026.blogspot.com/',
-    icon: <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M21 3H3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm-1 16H4V5h16v14zM6 7h12v2H6zm0 4h12v2H6zm0 4h8v2H6z"/></svg>,
-    desc: 'For quiz with AI-free questions and AI-powered answers', color: '#FF6B35' },
+    icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M21 3H3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm-1 16H4V5h16v14zM6 7h12v2H6zm0 4h12v2H6zm0 4h8v2H6z"/></svg>,
+    desc: 'Quiz with AI-free questions and AI-powered answers', color: '#FF6B35' },
   { name: 'Instagram',   handle: '@reavan1881', url: 'https://www.instagram.com/reavan1881?igsh=MW5obTJxemFpMnM2OQ==',
-    icon: <Instagram size={22} />, desc: 'A Collection of Coimbatore Landmarks with Tree Marks', color: '#E1306C' },
+    icon: <Instagram size={20}/>, desc: 'Coimbatore Landmarks with Tree Marks', color: '#E1306C' },
   { name: 'Pinterest',   handle: 'ponrathnavel', url: 'https://pin.it/34KNJeLko',
-    icon: <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>,
-    desc: 'A collection of photos of people who inspire him', color: '#E60023' },
+    icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>,
+    desc: 'Photos of people who inspire him', color: '#E60023' },
   { name: 'Facebook',    handle: 'reavan',      url: 'https://www.facebook.com/reavan',
-    icon: <Facebook size={22} />, desc: 'Community updates and engagement', color: '#1877F2' },
+    icon: <Facebook size={20}/>, desc: 'Community updates and engagement', color: '#1877F2' },
 ]
-function SocialConnect() {
-  const { ref, visible } = useScrollReveal()
+function Connect() {
+  const { ref, v } = useReveal()
   return (
-    <section id="connect" ref={ref} className="section-pad bg-ivory-50">
+    <section id="connect" ref={ref} className="py-16 bg-white">
       <div className="max-w-6xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}
-          className="text-center mb-14">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-8 bg-gold-500/40" />
-            <span className="font-sans text-xs text-gold-600/70 tracking-widest uppercase">Find Rathnavel Online</span>
-            <div className="h-px w-8 bg-gold-500/40" />
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          className="text-center mb-10">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="h-px w-8" style={{ backgroundColor: GOLD + '50' }}/>
+            <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>Find Rathnavel Online</span>
+            <div className="h-px w-8" style={{ backgroundColor: GOLD + '50' }}/>
           </div>
-          <h2 className="font-display text-4xl lg:text-5xl text-navy-950">Connect</h2>
+          <h2 className="font-display text-3xl lg:text-4xl font-bold text-gray-900">Connect</h2>
         </motion.div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {socials.map((s, i) => (
             <motion.a key={i} href={s.url} target="_blank" rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 24 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="bg-white rounded-xl p-6 flex items-start gap-4 group hover:-translate-y-2 border border-navy-800/8 hover:border-gold-500/30 shadow-sm hover:shadow-md transition-all duration-300">
-              <div className="w-12 h-12 rounded-xl border border-navy-800/8 flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110"
-                style={{ backgroundColor: s.color + '14', color: s.color }}>
+              initial={{ opacity: 0, y: 20 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group bg-white">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+                style={{ backgroundColor: s.color + '15', color: s.color }}>
                 {s.icon}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-display text-navy-950 font-semibold text-lg">{s.name}</span>
-                  <ExternalLink size={12} className="text-navy-800/25 group-hover:text-gold-500 transition-colors flex-shrink-0" />
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <span className="font-display text-gray-900 font-semibold text-base">{s.name}</span>
+                  <ExternalLink size={11} className="text-gray-300 group-hover:text-yellow-500 transition-colors"/>
                 </div>
-                <div className="font-sans text-xs mb-2" style={{ color: s.color + 'CC' }}>{s.handle}</div>
-                <p className="font-body text-navy-800/50 text-base leading-snug">{s.desc}</p>
+                <div className="font-sans text-xs mb-1" style={{ color: s.color + 'BB' }}>{s.handle}</div>
+                <p className="font-body text-gray-400 text-sm leading-snug">{s.desc}</p>
               </div>
             </motion.a>
           ))}
@@ -446,24 +475,26 @@ function SocialConnect() {
   )
 }
 
-/* ── Footer ── */
+/* ══════════════════════════════════════════
+   FOOTER  (dark)
+══════════════════════════════════════════ */
 function Footer() {
   return (
-    <footer className="border-t border-navy-800/10 py-10 bg-white">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div className="text-center sm:text-left">
-          <div className="font-display text-navy-800/50 text-sm mb-1 tracking-widest uppercase">Rathnavel Pon</div>
-          <div className="font-sans text-navy-800/25 text-xs">© 2026 · rathnavelpon.in</div>
+    <footer className="py-8 border-t border-white/8" style={{ backgroundColor: DARK }}>
+      <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <div className="font-display text-white/50 text-sm tracking-widest uppercase mb-0.5">Rathnavel Pon</div>
+          <div className="font-sans text-white/25 text-xs">© 2026 · rathnavelpon.in</div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {[
-            { href: 'https://www.linkedin.com/in/reavan/', icon: <Linkedin size={16} /> },
-            { href: 'https://x.com/reavan',               icon: <Twitter size={16} /> },
-            { href: 'https://www.instagram.com/reavan1881?igsh=MW5obTJxemFpMnM2OQ==', icon: <Instagram size={16} /> },
-            { href: 'https://www.facebook.com/reavan',    icon: <Facebook size={16} /> },
+            { href: 'https://www.linkedin.com/in/reavan/', icon: <Linkedin size={15}/> },
+            { href: 'https://x.com/reavan',               icon: <Twitter size={15}/> },
+            { href: 'https://www.instagram.com/reavan1881?igsh=MW5obTJxemFpMnM2OQ==', icon: <Instagram size={15}/> },
+            { href: 'https://www.facebook.com/reavan',    icon: <Facebook size={15}/> },
           ].map((s, i) => (
             <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
-              className="w-8 h-8 rounded-lg border border-navy-800/12 flex items-center justify-center text-navy-800/30 hover:text-gold-600 hover:border-gold-500/40 transition-all duration-300">
+              className="w-8 h-8 rounded-lg border border-white/10 flex items-center justify-center text-white/30 hover:text-yellow-400 hover:border-yellow-400/40 transition-all">
               {s.icon}
             </a>
           ))}
@@ -473,11 +504,13 @@ function Footer() {
   )
 }
 
-/* ── Root ── */
+/* ══════════════════════════════════════════
+   ROOT
+══════════════════════════════════════════ */
 export default function App() {
   return (
-    <div className="min-h-screen bg-ivory-50">
-      <Navigation />
+    <div className="min-h-screen bg-white">
+      <Nav />
       <main>
         <Hero />
         <Programmes />
@@ -485,7 +518,7 @@ export default function App() {
         <About />
         <Journey />
         <Advisory />
-        <SocialConnect />
+        <Connect />
       </main>
       <Footer />
     </div>
