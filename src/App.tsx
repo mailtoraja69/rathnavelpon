@@ -477,6 +477,7 @@ function Footer() {
         <div>
           <div className="font-display text-white/50 text-sm tracking-widest uppercase mb-0.5">Rathnavel Pon</div>
           <div className="font-sans text-white/25 text-xs">© 2026 · rathnavelpon.in</div>
+           <div className="font-sans text-white/25 text-xs">© All Lefts Are Unreserved😉</div>
         </div>
         <div className="flex items-center gap-3">
           {[
