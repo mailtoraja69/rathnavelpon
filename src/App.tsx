@@ -140,16 +140,9 @@ function Hero() {
               <div className="absolute bottom-0 left-0 right-0 px-5 py-4"
                 style={{ background: 'linear-gradient(to top, rgba(17,24,39,0.92) 0%, transparent 100%)' }}>
                 <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
-                  <span className="text-white/90 text-xs font-sans">🫀 Organ Donor</span>
-                  <span className="text-white/40 text-xs">·</span>
-                  <span className="text-white/90 text-xs font-sans">🩸 A1B+ve</span>
-                  <span className="text-white/40 text-xs">·</span>
-                  <span className="text-white/90 text-xs font-sans">♌ August Born</span>
-                  <span className="text-white/40 text-xs">·</span>
-                  <span className="text-white/90 text-xs font-sans">🗣️ Bilingual</span>
                 </div>
                 <div className="h-px bg-white/10 my-2"/>
-                <p className="text-white/45 text-xs font-sans text-center">📖 Not so voracious Reader &nbsp;·&nbsp; 🎬 More than Usual Movie Viewer</p>
+                <p className="text-Gold/45 text-xs font-sans text-center">📖 Not so voracious Reader &nbsp;·&nbsp; 🎬 More than Usual Movie Viewer</p>
               </div>
             </div>
           </motion.div>
@@ -220,7 +213,6 @@ function Stats() {
             </div>
             <h2 className="font-display text-3xl font-bold text-gray-900">Impact in Numbers</h2>
           </div>
-          <p className="font-display text-xl italic" style={{ color: GOLD }}>Coimbatore — Classrooms — Cricket</p>
         </motion.div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {stats.map((s, i) => (
@@ -254,7 +246,7 @@ function About() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
           <motion.div initial={{ opacity: 0, x: -24 }} animate={v ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
-              Coimbatore —<br/>Classrooms — Cricket
+              Coimbatore — Classrooms — Cricket
             </h2>
             <p className="font-body text-lg text-white/60 leading-loose mb-4">
               A thorough Coimbatore person, Rathnavel was schooled at Carmel Garden and SBOA. He completed B.E. Civil Engineering from KCT and M.E. Environmental Engineering in GCT. He has two decades of experience in technical education with 8 engineering colleges. In parallel, he has emerged over five lustrums, as a facilitator for short non formal programmes. He has also had a short stint in environmental management and life insurance.
