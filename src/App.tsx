@@ -115,21 +115,7 @@ function Hero() {
               An educator formally engaged in teaching Civil Engineering.
               A writer with adequate intelligence to compete with Artificial Intelligence.
             </motion.p>
-      <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            transition={{ delay: 0.6 }}
-            className="flex flex-wrap gap-3"
-        >
-    <a 
-    href="https://www.linkedin.com/in/reavan/" 
-    target="_blank" 
-    rel="noopener noreferrer"
-    className="bg-[#0077B5] inline-flex items-center gap-2 px-6 py-3 rounded font-sans font-semibold text-sm text-white transition-all hover:opacity-90"
-  >
-    <Linkedin size={15}/> Connect on LinkedIn <ArrowRight size={13}/>
-  </a>
-</motion.div>
+     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="flex flex-wrap gap-3"> <a href="https://www.linkedin.com/in/reavan/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded font-sans font-semibold text-sm text-white transition-all hover:opacity-90" style={{ backgroundColor: DARK }}> <Linkedin size={15}/> Connect on LinkedIn <ArrowRight size={13}/>
 </motion.div>
               </a>
               <a href="https://calendly.com/reavan/connect-with-rathnavel" target="_blank" rel="noopener noreferrer"
