@@ -221,7 +221,7 @@ function Stats() {
             </div>
             <h2 className="font-display text-4xl text-navy-950">Impact in Numbers</h2>
           </div>
-          <p className="font-display text-2xl text-gold-600/55 italic">Coimbatore — Classrooms — Cricket</p>
+          <p className="font-display text-2xl text-gold-600/45 italic">Coimbatore — Classrooms — Cricket</p>
         </motion.div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
           {stats.map((s, i) => (
