@@ -2,71 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --navy-950: #060D1A;
-  --navy-900: #0B1A2E;
-  --navy-800: #0D2240;
-  --ivory-50:  #FDFAF4;
-  --ivory-100: #F8F1E3;
-  --ivory-200: #F2E6CC;
-  --gold-500: #C9A84C;
-  --gold-400: #D4AA50;
-  --emerald-700: #2D6A4F;
-  --emerald-600: #40916C;
-}
-
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--ivory-50);
-  color: var(--navy-900);
+  background-color: #ffffff;
+  color: #111827;
   font-family: 'Cormorant Garamond', Georgia, serif;
   overflow-x: hidden;
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #F8F1E3; }
-::-webkit-scrollbar-thumb { background: #C9A84C55; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #C9A84C99; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #f9f9f9; }
+::-webkit-scrollbar-thumb { background: #C9A84C66; border-radius: 4px; }
 
-::selection { background: rgba(201,168,76,0.18); color: #060D1A; }
+::selection { background: rgba(201,168,76,0.2); color: #111827; }
 
-*:focus-visible {
-  outline: 1px solid rgba(201,168,76,0.6);
-  outline-offset: 2px;
-}
+*:focus-visible { outline: 1px solid #C9A84C; outline-offset: 2px; }
 
-.text-gold-gradient {
+.gold-text {
   background: linear-gradient(135deg, #B8922A 0%, #C9A84C 50%, #D4AA50 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.glow-border {
-  border: 1px solid rgba(13,34,64,0.1);
-  box-shadow: 0 1px 3px rgba(13,34,64,0.06);
+/* Road map path animation */
+@keyframes drawPath {
+  from { stroke-dashoffset: 1200; }
+  to   { stroke-dashoffset: 0; }
 }
-
-.glow-border:hover {
-  border-color: rgba(201,168,76,0.35);
-  box-shadow: 0 4px 20px rgba(201,168,76,0.08);
+.road-path {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
 }
-
-.glass-card {
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.section-pad {
-  padding-top: 7rem;
-  padding-bottom: 7rem;
-}
-
-@media (max-width: 768px) {
-  .section-pad {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
+.road-path.animate {
+  animation: drawPath 2s ease forwards;
 }
