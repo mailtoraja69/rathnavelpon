@@ -141,7 +141,7 @@ function Hero() {
                 style={{ background: 'linear-gradient(to top, rgba(17,24,39,0.92) 0%, transparent 100%)' }}>
                 <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
                 <div className="h-px bg-white/10 my-2"/>
-                <p className="text-GOLD/45 text-xs font-sans text-center">📖 Not so voracious Reader &nbsp;·&nbsp; <br/>🎬 More than Usual Movie Viewer</p>
+                <p className="text-white/45 text-xs font-sans text-center">📖 Not so voracious Reader &nbsp;·&nbsp; <br/>🎬 More than Usual Movie Viewer</p>
               </div>
             </div>
           </motion.div>
