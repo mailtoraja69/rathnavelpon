@@ -455,7 +455,7 @@ const advisoryClients = [
   { name: 'Prajai Times',                    url: 'http://prajaitimes.in',                                                           abbr: 'PT'  },
   { name: 'BESTOW',                          url: 'https://www.instagram.com/bestow.cbe/',                                           abbr: 'BW'  },
   { name: 'Elite Construction & Architects', url: 'https://www.facebook.com/people/Elite-Construction-And-Architects/61571073511891/', abbr: 'EC'  }
-  { name: 'IRAAH Photography', url: 'https://www.instagram.com/iraahphotography/', abbr: 'EC'  },
+  { name: 'IRAAH Photography', url: 'https://www.instagram.com/iraahphotography/', abbr: 'EC'  }
 ]
 function Advisory() {
   const { ref, v } = useReveal()
