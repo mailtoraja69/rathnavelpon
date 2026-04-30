@@ -278,72 +278,177 @@ function About() {
 }
 
 /* ══════════════════════════════════════════
-   JOURNEY  — sketch roadmap with pins
+   JOURNEY — sketch roadmap with pins
 ══════════════════════════════════════════ */
-const timeline = [
-  { year: '2001', role: 'Freelance Trainer',   org: 'MoC · Non Formal Learning · Quizzes',               pin: '#E53E3E' },
-  { year: '2004', role: 'Lecturer',            org: 'Hindusthan College of Engineering and Technology',   pin: GOLD },
-  { year: '2005', role: 'Lecturer',            org: 'Tamilnadu College of Engineering',                   pin: GOLD },
-  { year: '2006', role: 'Chief Executive',     org: 'ECO-TECH',                                           pin: '#38A169' },
-  { year: '2007', role: 'Lecturer',            org: 'SNS College of Engineering',                         pin: GOLD },
-  { year: '2008', role: 'Lecturer',            org: 'Adithya Institute of Technology',                    pin: GOLD },
-  { year: '2009', role: 'Assistant Professor', org: 'Kalaivani College of Technology',                    pin: GOLD },
-  { year: '2011', role: 'Assistant Professor', org: 'KTVR Knowledge Park for Engg. & Technology',         pin: GOLD },
-  { year: '2013', role: 'Assistant Professor', org: 'Coimbatore Institute of Engg. and Technology',       pin: GOLD },
-  { year: '2015', role: 'Assistant Professor', org: 'Akshaya College of Engineering and Technology',      pin: GOLD },
-  { year: '2019', role: 'Apex Person',         org: 'Nicety Shelters and Solutions',                      pin: '#38A169' },
-  { year: '2020', role: 'Financial Advisor',   org: 'ICICI Prudential',                                   pin: '#E53E3E' },
+const milestones = [
+  { year:'2001', role:'Freelance Trainer',   org:'MoC · Non Formal Learning · Quizzes',               color:'#E53935', bg:'#fff5f5', side:'left'  },
+  { year:'2004', role:'Lecturer',            org:'Hindusthan College of Engineering & Technology',     color:'#1E88E5', bg:'#f0f6ff', side:'right' },
+  { year:'2005', role:'Lecturer',            org:'Tamilnadu College of Engineering',                   color:'#F59E0B', bg:'#fffbf0', side:'left'  },
+  { year:'2006', role:'Chief Executive',     org:'ECO-TECH',                                           color:'#43A047', bg:'#f0fff4', side:'right' },
+  { year:'2007', role:'Lecturer',            org:'SNS College of Engineering',                         color:'#8E24AA', bg:'#fdf4ff', side:'left'  },
+  { year:'2008', role:'Lecturer',            org:'Adithya Institute of Technology',                    color:'#E53935', bg:'#fff5f5', side:'right' },
+  { year:'2009', role:'Assistant Professor', org:'Kalaivani College of Technology',                    color:'#1E88E5', bg:'#f0f6ff', side:'left'  },
+  { year:'2011', role:'Assistant Professor', org:'KTVR Knowledge Park for Engg. & Technology',         color:'#F59E0B', bg:'#fffbf0', side:'right' },
+  { year:'2013', role:'Assistant Professor', org:'Coimbatore Institute of Engg. and Technology',       color:'#43A047', bg:'#f0fff4', side:'left'  },
+  { year:'2015', role:'Assistant Professor', org:'Akshaya College of Engineering & Technology',        color:'#8E24AA', bg:'#fdf4ff', side:'right' },
+  { year:'2019', role:'Apex Person',         org:'Nicety Shelters and Solutions',                      color:'#E53935', bg:'#fff5f5', side:'left'  },
+  { year:'2020', role:'Financial Advisor',   org:'ICICI Prudential',                                   color:'#1E88E5', bg:'#f0f6ff', side:'right' },
 ]
 
-function Journey() {
-  const { ref, v } = useReveal(0.05)
+function Pushpin({ color }: { color: string }) {
   return (
-    <section id="journey" ref={ref} className="py-16 bg-white">
-      <div className="max-w-3xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          className="text-center mb-12">
+    <svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg"
+      style={{ position:'absolute', top:'-10px', left:'14px', filter:'drop-shadow(1px 2px 2px rgba(0,0,0,0.25))' }}>
+      <ellipse cx="14" cy="11" rx="10" ry="10" fill={color}/>
+      <ellipse cx="14" cy="11" rx="7" ry="7" fill="white" fillOpacity="0.35"/>
+      <ellipse cx="11" cy="8" rx="3" ry="2" fill="white" fillOpacity="0.5" transform="rotate(-20 11 8)"/>
+      <line x1="14" y1="20" x2="14" y2="35" stroke={color} strokeWidth="2.5" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
+function MapPin({ color }: { color: string }) {
+  return (
+    <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 7.5 12 20 12 20S24 19.5 24 12C24 5.373 18.627 0 12 0z" fill={color}/>
+      <circle cx="12" cy="12" r="5" fill="white" fillOpacity="0.9"/>
+    </svg>
+  )
+}
+
+function Journey() {
+  const { ref, v } = useReveal(0.03)
+
+  return (
+    <section id="journey" ref={ref} className="py-20 bg-white overflow-hidden">
+      <div className="max-w-5xl mx-auto px-6">
+
+        {/* Header */}
+        <motion.div initial={{ opacity:0, y:20 }} animate={v ? { opacity:1, y:0 } : {}} transition={{ duration:0.6 }}
+          className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <div className="h-px w-10" style={{ backgroundColor: GOLD + '50' }}/>
-            <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>The Journey</span>
-            <div className="h-px w-10" style={{ backgroundColor: GOLD + '50' }}/>
+            <div className="h-px w-10" style={{ background:'#C9A84C55' }}/>
+            <span className="font-sans text-xs tracking-widest uppercase" style={{ color:'#C9A84C' }}>The Journey</span>
+            <div className="h-px w-10" style={{ background:'#C9A84C55' }}/>
           </div>
           <h2 className="font-display text-4xl lg:text-5xl font-bold text-gray-900">
-            26 Years, <span className="gold-text">One Direction</span>
+            26 Years, <span style={{
+              background:'linear-gradient(135deg,#E53935,#F59E0B,#43A047,#1E88E5)',
+              WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text'
+            }}>One Direction</span>
           </h2>
-          <p className="font-body text-gray-400 mt-2 text-lg">Each pin marks a chapter. Follow the road.</p>
+          <p className="font-body text-gray-400 mt-2 text-lg italic">Each pin marks a chapter. Follow the road.</p>
         </motion.div>
 
-        {/* Road map list */}
-        <div className="relative">
-          {/* Vertical dashed road line */}
-          <div className="absolute left-[13px] top-3 bottom-3 w-[2px] hidden sm:block"
-            style={{ background: 'repeating-linear-gradient(to bottom, #D4AA5044 0px, #D4AA5044 8px, transparent 8px, transparent 16px)' }}/>
+        {/* Desktop roadmap */}
+        <div className="hidden md:block relative" style={{ minHeight: `${milestones.length * 160}px` }}>
 
-          <div className="space-y-5">
-            {timeline.map((item, i) => (
+          {/* SVG curved path */}
+          <svg className="absolute inset-0 w-full h-full" style={{ zIndex:0 }} preserveAspectRatio="none"
+            viewBox="0 0 900 1920" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="sketch">
+                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="2" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+            </defs>
+            <path
+              d="M450,40 C650,40 750,200 450,240 C150,280 50,440 450,480 C750,520 650,680 450,720 C150,760 50,920 450,960 C750,1000 650,1160 450,1200 C150,1240 50,1400 450,1440 C750,1480 650,1640 450,1680 C150,1720 250,1840 450,1880"
+              fill="none" stroke="#CBD5E0" strokeWidth="3" strokeDasharray="10 6"
+              filter="url(#sketch)" strokeLinecap="round"/>
+          </svg>
+
+          {milestones.map((m, i) => {
+            const isLeft = m.side === 'left'
+            const topPct = (i / (milestones.length - 1)) * 100
+            const pinColors = ['#E53935','#1E88E5','#F59E0B','#43A047','#8E24AA']
+            const pinColor = pinColors[i % pinColors.length]
+
+            return (
               <motion.div key={i}
-                initial={{ opacity: 0, x: -18 }} animate={v ? { opacity: 1, x: 0 } : {}}
-                transition={{ delay: i * 0.06, duration: 0.5 }}
-                className="flex items-start gap-4 group">
-                {/* Pin */}
-                <div className="flex-shrink-0 mt-1 hidden sm:block">
-                  <Pin color={item.pin} size={28}/>
-                </div>
+                initial={{ opacity:0, x: isLeft ? -40 : 40 }}
+                animate={v ? { opacity:1, x:0 } : {}}
+                transition={{ delay: i * 0.08, duration: 0.55 }}
+                style={{
+                  position:'absolute',
+                  top: `${(i / milestones.length) * 100 + 1}%`,
+                  left: isLeft ? '2%' : '52%',
+                  width:'42%',
+                  zIndex: 2,
+                }}>
+
                 {/* Card */}
-                <div className="flex-1 rounded-xl px-5 py-4 border border-gray-100 hover:border-yellow-200 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 bg-white">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="font-display text-lg font-bold text-gray-900">{item.role}</div>
-                    <span className="font-sans text-xs px-2.5 py-0.5 rounded-full border font-semibold"
-                      style={{ color: item.pin, borderColor: item.pin + '40', backgroundColor: item.pin + '12' }}>
-                      {item.year}
-                    </span>
+                <div style={{
+                  position:'relative',
+                  background: m.bg,
+                  border: `1.5px solid ${m.color}33`,
+                  borderRadius:'12px',
+                  padding:'20px 20px 16px 22px',
+                  boxShadow:`3px 4px 0px ${m.color}22, 0 2px 12px rgba(0,0,0,0.06)`,
+                  fontFamily:'inherit',
+                }}>
+                  {/* Sketch corner accent */}
+                  <div style={{
+                    position:'absolute', top:6, right:8,
+                    width:28, height:28, borderTop:`2px solid ${m.color}40`,
+                    borderRight:`2px solid ${m.color}40`, borderRadius:'0 6px 0 0',
+                  }}/>
+                  {/* Pushpin */}
+                  <Pushpin color={m.color}/>
+                  {/* Year */}
+                  <div style={{ color: m.color, fontFamily:'"Playfair Display",Georgia,serif', fontSize:'1.4rem', fontWeight:700, marginBottom:2 }}>
+                    {m.year}
                   </div>
-                  <div className="font-sans text-sm text-gray-400 mt-0.5">{item.org}</div>
+                  {/* Role */}
+                  <div style={{ color:'#111827', fontFamily:'"Playfair Display",Georgia,serif', fontSize:'1.05rem', fontWeight:700, marginBottom:3, lineHeight:1.3 }}>
+                    {m.role}
+                  </div>
+                  {/* Org */}
+                  <div style={{ color:'#6B7280', fontFamily:'"Manrope",sans-serif', fontSize:'0.78rem', lineHeight:1.4 }}>
+                    {m.org}
+                  </div>
+                </div>
+
+                {/* Map pin connector — points toward center path */}
+                <div style={{
+                  position:'absolute',
+                  top:'50%',
+                  [isLeft ? 'right' : 'left']: '-36px',
+                  transform:'translateY(-50%)',
+                  display:'flex',
+                  alignItems:'center',
+                }}>
+                  <MapPin color={pinColor}/>
                 </div>
               </motion.div>
-            ))}
-          </div>
+            )
+          })}
         </div>
+
+        {/* Mobile: simple vertical list */}
+        <div className="md:hidden space-y-5">
+          {milestones.map((m, i) => (
+            <motion.div key={i}
+              initial={{ opacity:0, x:-20 }} animate={v ? { opacity:1, x:0 } : {}}
+              transition={{ delay: i * 0.06, duration: 0.5 }}
+              className="flex gap-3 items-start">
+              <div className="flex-shrink-0 mt-1">
+                <MapPin color={m.color}/>
+              </div>
+              <div style={{
+                flex:1, background:m.bg,
+                border:`1.5px solid ${m.color}30`,
+                borderRadius:'10px', padding:'14px 16px',
+                boxShadow:`2px 3px 0px ${m.color}20`,
+              }}>
+                <div style={{ color:m.color, fontFamily:'"Playfair Display",Georgia,serif', fontWeight:700, fontSize:'1.1rem' }}>{m.year}</div>
+                <div style={{ color:'#111827', fontFamily:'"Playfair Display",Georgia,serif', fontWeight:700, fontSize:'0.95rem', marginBottom:2 }}>{m.role}</div>
+                <div style={{ color:'#6B7280', fontFamily:'"Manrope",sans-serif', fontSize:'0.75rem' }}>{m.org}</div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
       </div>
     </section>
   )
