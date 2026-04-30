@@ -136,6 +136,7 @@ function Hero() {
             className="w-full lg:w-80 flex-shrink-0">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img src="/ai2.png" alt="Rathnavel Ponnuswami" className="w-full h-[460px] object-cover object-top"/>
+              </div>
               <div className="absolute bottom-0 left-0 right-0 px-5 py-4"
                 style={{ background: 'linear-gradient(to top, rgba(17,24,39,0.92) 0%, transparent 100%)' }}>
                 <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
