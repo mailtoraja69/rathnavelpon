@@ -585,6 +585,8 @@ function Footer() {
             </a>
           ))}
         </div>
+                  <div className="font-sans text-white/25 text-xs">© URGE (Untiring Raja Gopal Effort)</div>
+
       </div>
     </footer>
   )
