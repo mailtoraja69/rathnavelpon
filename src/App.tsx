@@ -18,9 +18,8 @@ const GOLD = '#C9A84C'
 const DARK = '#111827'
 
 /* ── Pin SVG ── */
-function Pin({ color = GOLD, size = 28 }: { color?: string; size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} xmlns="http://www.w3.org/2000/svg">
+function Pin({ color = GOLD }: { color?: string }) {  return (
+    <svg width={28} height={28} viewBox="0 0 24 24" fill={color} xmlns="http://www.w3.org/2000/svg">
       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
     </svg>
   )
@@ -307,7 +306,7 @@ function Pushpin({ color }: { color: string }) {
   )
 }
 
-function MapPin({ color }: { color: string }) {
+function RoadPin({ color }: { color: string }) {
   return (
     <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M12 0C5.373 0 0 5.373 0 12c0 7.5 12 20 12 20S24 19.5 24 12C24 5.373 18.627 0 12 0z" fill={color}/>
@@ -418,7 +417,7 @@ function Journey() {
                   display:'flex',
                   alignItems:'center',
                 }}>
-                  <MapPin color={pinColor}/>
+                  <RoadPin color={pinColor}/>
                 </div>
               </motion.div>
             )
@@ -433,7 +432,7 @@ function Journey() {
               transition={{ delay: i * 0.06, duration: 0.5 }}
               className="flex gap-3 items-start">
               <div className="flex-shrink-0 mt-1">
-                <MapPin color={m.color}/>
+                <RoadPin color={m.color}/>
               </div>
               <div style={{
                 flex:1, background:m.bg,
