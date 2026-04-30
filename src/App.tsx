@@ -131,21 +131,6 @@ function Hero() {
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img src="/ai2.png" alt="Rathnavel Ponnuswami" className="w-full h-[460px] object-cover object-top"/>
             </div>
-            <div className="px-5 py-3 rounded-b-xl mt-1 bg-gray-900">
-              <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
-                <span className="text-white/90 text-xs font-sans">🫀 Organ Donor</span>
-                <span className="text-white/40 text-xs">·</span>
-                <span className="text-white/90 text-xs font-sans">🩸 A1B+ve</span>
-                <span className="text-white/40 text-xs">·</span>
-                <span className="text-white/90 text-xs font-sans">♌ August Born</span>
-                <span className="text-white/40 text-xs">·</span>
-                <span className="text-white/90 text-xs font-sans">🗣️ Bilingual</span>
-              </div>
-              <div className="h-px bg-white/10 my-2"/>
-              <p className="text-white/70 text-xs font-sans text-right pr-1">📖 Not so voracious Reader · 🎬 More than Usual Movie Viewer</p>
-            </div>
-          </motion.div>
-        </div>
       </div>
     </section>
   )
@@ -241,7 +226,6 @@ function About() {
         </motion.div>
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
           <motion.div initial={{ opacity: 0, x: -24 }} animate={v ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
-            <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">Coimbatore — Classrooms — Cricket</h2>
             <p className="font-body text-lg text-white/60 leading-loose mb-4">
               A thorough Coimbatore person, Rathnavel was schooled at Carmel Garden and SBOA. He completed B.E. Civil Engg. from KCT and M.E. Environmental Engg. in GCT. He has two decades of experience in technical education with 8 engineering colleges. In parallel, he has emerged over five lustrums, as a facilitator for short non formal programmes. He has also had a short stint in environmental management and life insurance.
             </p>
@@ -323,10 +307,6 @@ function Journey() {
             <span className="font-sans text-xs tracking-widest uppercase" style={{ color:'#C9A84C' }}>The Journey</span>
             <div className="h-px w-10" style={{ background:'#C9A84C55' }}/>
           </div>
-          <h2 className="font-display text-4xl lg:text-5xl font-bold text-gray-900">
-            26 Years, <span style={{ background:'linear-gradient(135deg,#E53935,#F59E0B,#43A047,#1E88E5)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>One Direction</span>
-          </h2>
-          <p className="font-body text-gray-400 mt-2 text-lg italic">Each pin marks a chapter. Follow the road.</p>
         </motion.div>
         <div className="hidden md:block relative" style={{ minHeight: `${milestones.length * 160}px` }}>
           <svg className="absolute inset-0 w-full h-full" style={{ zIndex:0 }} preserveAspectRatio="none"
@@ -400,7 +380,6 @@ function Advisory() {
             <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>Advisory Role</span>
             <div className="h-px w-8" style={{ backgroundColor: GOLD + '55' }}/>
           </div>
-          <h2 className="font-display text-3xl lg:text-4xl font-bold text-white">Organisations He Advises</h2>
         </motion.div>
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           {advisoryClients.map((c, i) => (
