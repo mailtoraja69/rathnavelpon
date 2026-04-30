@@ -109,11 +109,11 @@ function Hero() {
             </motion.h1>
 
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }}
-              className="font-body text-lg text-gray-500 leading-relaxed max-w-lg mb-8">
+              className="font-body text-lg text-gray-900 leading-relaxed max-w-lg mb-8">
               In few words, FEW is the word.
-              A facilitator for short learning sessions, activity based learning and quiz competitions.
-              An educator formally engaged in teaching Civil Engineering.
-              A writer with adequate intelligence to compete with Artificial Intelligence.
+              A FACILITATOR for short learning sessions, activity based learning and quiz competitions.
+              An EDUCATOR formally engaged in teaching Civil Engineering.
+              A WRITER with adequate intelligence to compete with Artificial Intelligence.
             </motion.p>
 
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
