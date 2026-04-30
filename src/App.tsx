@@ -454,7 +454,8 @@ const advisoryClients = [
   { name: 'SDS Land Surveyors',              url: 'https://www.sdslandsurveyor.com/',                                               abbr: 'SDS' },
   { name: 'Prajai Times',                    url: 'http://prajaitimes.in',                                                           abbr: 'PT'  },
   { name: 'BESTOW',                          url: 'https://www.instagram.com/bestow.cbe/',                                           abbr: 'BW'  },
-  { name: 'Elite Construction & Architects', url: 'https://www.facebook.com/people/Elite-Construction-And-Architects/61571073511891/', abbr: 'EC'  },
+  { name: 'Elite Construction & Architects', url: 'https://www.facebook.com/people/Elite-Construction-And-Architects/61571073511891/', abbr: 'EC'  }
+  { name: 'IRAAH Photography', url: 'https://www.instagram.com/iraahphotography/', abbr: 'EC'  },
 ]
 function Advisory() {
   const { ref, v } = useReveal()
@@ -468,8 +469,8 @@ function Advisory() {
             <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>Advisory Role</span>
             <div className="h-px w-8" style={{ backgroundColor: GOLD + '55' }}/>
           </div>
-          <h2 className="font-display text-3xl lg:text-4xl font-bold text-white">Organisations He Advises</h2>
-          <p className="font-body text-lg text-white/40 mt-2">Logos coming soon — click to visit each organisation.</p>
+          <h2 className="font-display text-3xl lg:text-4xl font-bold text-white"></h2>
+          <p className="font-body text-lg text-white/40 mt-2"></p>
         </motion.div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {advisoryClients.map((c, i) => (
