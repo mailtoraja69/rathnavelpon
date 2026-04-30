@@ -379,7 +379,7 @@ function Advisory() {
               style={{ backgroundColor: '#ffffff' }}>
               {/* Logo placeholder — replace span with <img src="/logo-sds.png" ...> when logos arrive */}
               <div className="w-16 h-16 rounded-lg border border-white/10 flex items-center justify-center group-hover:border-yellow-500/30 transition-all">
-                <span className="font-display text-lg font-bold text-white/30 group-hover:text-yellow-400 transition-colors">{c.abbr}</span>
+                <span className="font-display text-lg font-bold text-gray-900 group-hover:text-yellow-400 transition-colors">{c.abbr}</span>
               </div>
               <div className="text-center">
                 <div className="font-display text-sm text-white/80 font-semibold leading-tight group-hover:text-yellow-300 transition-colors">{c.name}</div>
