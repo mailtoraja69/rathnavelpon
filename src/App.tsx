@@ -110,6 +110,7 @@ function Hero() {
 
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }}
               className="font-body text-lg text-gray-500 leading-relaxed max-w-lg mb-8">
+              In few words, FEW is the word.
               A facilitator for short learning sessions, activity based learning and quiz competitions.
               An educator formally engaged in teaching Civil Engineering.
               A writer with adequate intelligence to compete with Artificial Intelligence.
