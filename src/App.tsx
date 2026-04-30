@@ -173,7 +173,7 @@ function Programmes() {
               style={{ backgroundColor: '#ffffff' }}>
               <div className="text-3xl mb-3">{p.emoji}</div>
               <div className="font-display text-2xl font-bold mb-1 gold-text">{p.code}</div>
-              <div className="font-sans text-xs text-white/45 leading-snug">{p.sub}</div>
+              <div className="font-sans text-xs text-grey/900 leading-snug">{p.sub}</div>
             </motion.div>
           ))}
         </div>
