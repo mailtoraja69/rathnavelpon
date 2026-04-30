@@ -329,12 +329,12 @@ function Journey() {
             <div className="h-px w-10" style={{ background:'#C9A84C55' }}/>
           </div>
           <h2 className="font-display text-4xl lg:text-5xl font-bold text-gray-900">
-            26 Years, <span style={{
+            <span style={{
               background:'linear-gradient(135deg,#E53935,#F59E0B,#43A047,#1E88E5)',
               WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text'
-            }}>One Direction</span>
+            }}</span>
           </h2>
-          <p className="font-body text-gray-400 mt-2 text-lg italic">Each pin marks a chapter. Follow the road.</p>
+          <p className="font-body text-gray-400 mt-2 text-lg italic"></p>
         </motion.div>
 
         {/* Desktop roadmap */}
