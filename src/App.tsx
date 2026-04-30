@@ -384,7 +384,7 @@ function Advisory() {
               <div className="text-center">
                 <div className="font-display text-sm text-grey/900 font-semibold leading-tight group-hover:text-yellow-300 transition-colors">{c.name}</div>
                 <div className="flex items-center justify-center gap-1 mt-1.5">
-                  <ExternalLink size={10} className="text-white/25 group-hover:text-yellow-400 transition-colors"/>
+                  <ExternalLink size={10} className="text-grey/900 group-hover:text-yellow-400 transition-colors"/>
                   <span className="font-sans text-xs text-grey/900 group-hover:text-yellow-400 transition-colors">Visit</span>
                 </div>
               </div>
