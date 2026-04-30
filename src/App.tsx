@@ -170,7 +170,7 @@ function Programmes() {
             <motion.div key={p.code}
               initial={{ opacity: 0, y: 20 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1, duration: 0.5 }}
               className="rounded-xl p-6 text-center border border-white/8 hover:-translate-y-1 transition-all duration-300 cursor-default"
-              style={{ backgroundColor: '#1f2937' }}>
+              style={{ backgroundColor: '#ffffff' }}>
               <div className="text-3xl mb-3">{p.emoji}</div>
               <div className="font-display text-2xl font-bold mb-1 gold-text">{p.code}</div>
               <div className="font-sans text-xs text-white/45 leading-snug">{p.sub}</div>
@@ -376,7 +376,7 @@ function Advisory() {
             <motion.a key={i} href={c.url} target="_blank" rel="noopener noreferrer"
               initial={{ opacity: 0, y: 24 }} animate={v ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.12, duration: 0.5 }}
               className="group flex flex-col items-center justify-center gap-3 p-6 rounded-xl border border-white/8 hover:border-yellow-500/40 transition-all duration-300 hover:-translate-y-1"
-              style={{ backgroundColor: '#1f2937' }}>
+              style={{ backgroundColor: '#ffffff' }}>
               {/* Logo placeholder — replace span with <img src="/logo-sds.png" ...> when logos arrive */}
               <div className="w-16 h-16 rounded-lg border border-white/10 flex items-center justify-center group-hover:border-yellow-500/30 transition-all">
                 <span className="font-display text-lg font-bold text-white/30 group-hover:text-yellow-400 transition-colors">{c.abbr}</span>
