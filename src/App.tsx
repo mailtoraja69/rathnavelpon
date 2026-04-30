@@ -242,7 +242,7 @@ function About() {
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
               Coimbatore.<br/>
                </div>
-                <span className="gold-text">Classrooms.</span><br/>
+                <"gold-text">Classrooms.</span><br/>
              </div>
               Cricket.
             </h2>
