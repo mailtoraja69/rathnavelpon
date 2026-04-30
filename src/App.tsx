@@ -137,8 +137,6 @@ function Hero() {
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img src="/ai2.png" alt="Rathnavel Ponnuswami" className="w-full h-[460px] object-cover object-top"/>
               <div className="absolute bottom-0 left-0 right-0 px-5 py-4"
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>
