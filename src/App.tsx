@@ -123,7 +123,6 @@ function Hero() {
                 style={{ backgroundColor: DARK }}>
                 <Linkedin size={15}/> Connect on LinkedIn <ArrowRight size={13}/>
               </a>
-              </a>
               <a href="https://calendly.com/reavan/connect-with-rathnavel" target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded font-sans text-sm border-2 transition-all hover:bg-yellow-50"
                 style={{ borderColor: GOLD, color: GOLD }}>
@@ -141,9 +140,10 @@ function Hero() {
               <div className="absolute bottom-0 left-0 right-0 px-5 py-4"
                 style={{ background: 'linear-gradient(to top, rgba(17,24,39,0.92) 0%, transparent 100%)' }}>
                 <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
-                </div>
+                              </div>
                 <div className="h-px bg-white/10 my-2"/>
-                <p className="text-Gold/45 text-xs font-sans text-center">📖 Not so voracious Reader &nbsp;·&nbsp; 🎬 More than Usual Movie Viewer</p>
+                </div>
+                <p className="text-white/45 text-xs font-sans text-center">📖 Not so voracious Reader &nbsp;·&nbsp; 🎬 More than Usual Movie Viewer</p>
               </div>
             </div>
           </motion.div>
@@ -214,6 +214,7 @@ function Stats() {
             </div>
             <h2 className="font-display text-3xl font-bold text-gray-900">Impact in Numbers</h2>
           </div>
+          <p className="font-display text-xl italic" style={{ color: GOLD }}>Coimbatore — Classrooms — Cricket</p>
         </motion.div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {stats.map((s, i) => (
@@ -247,7 +248,7 @@ function About() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
           <motion.div initial={{ opacity: 0, x: -24 }} animate={v ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
-              Coimbatore — Classrooms — Cricket
+              Coimbatore —<br/>Classrooms — Cricket
             </h2>
             <p className="font-body text-lg text-white/60 leading-loose mb-4">
               A thorough Coimbatore person, Rathnavel was schooled at Carmel Garden and SBOA. He completed B.E. Civil Engineering from KCT and M.E. Environmental Engineering in GCT. He has two decades of experience in technical education with 8 engineering colleges. In parallel, he has emerged over five lustrums, as a facilitator for short non formal programmes. He has also had a short stint in environmental management and life insurance.
@@ -478,7 +479,8 @@ function Footer() {
         <div>
           <div className="font-display text-white/50 text-sm tracking-widest uppercase mb-0.5">Rathnavel Pon</div>
           <div className="font-sans text-white/25 text-xs">© 2026 · rathnavelpon.in</div>
-           <div className="font-sans text-white/25 text-xs">© All Lefts Are Unreserved😉</div>
+          <div className="font-sans text-white/25 text-xs">© All Lefts are Unreserved😉</div>
+
         </div>
         <div className="flex items-center gap-3">
           {[
