@@ -141,7 +141,6 @@ function Hero() {
                 <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-1">
                 </div>
                 <div className="h-px bg-white/10 my-2"/>
-                <p className="text-white/45 text-xs font-sans text-center">📖 Not so voracious Reader &nbsp;·&nbsp; 🎬 More than Usual Movie Viewer</p>
               </div>
             </div>
           </motion.div>
