@@ -131,6 +131,8 @@ function Hero() {
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img src="/ai2.png" alt="Rathnavel Ponnuswami" className="w-full h-[460px] object-cover object-top"/>
             </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   )
@@ -380,6 +382,7 @@ function Advisory() {
             <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>Advisory Role</span>
             <div className="h-px w-8" style={{ backgroundColor: GOLD + '55' }}/>
           </div>
+          <h2 className="font-display text-3xl lg:text-4xl font-bold text-white"></h2>
         </motion.div>
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           {advisoryClients.map((c, i) => (
