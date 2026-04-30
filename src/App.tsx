@@ -242,7 +242,6 @@ function About() {
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
               Coimbatore.<br/>
                 Classrooms.<br/>
-             </div>
               Cricket.
             </h2>
             <p className="font-body text-lg text-white/60 leading-loose mb-4">
