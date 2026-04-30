@@ -241,7 +241,9 @@ function About() {
           <motion.div initial={{ opacity: 0, x: -24 }} animate={v ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
               Coimbatore.<br/>
-              Classrooms.<br/>
+               </div>
+                <span className="gold-text">Classrooms.</span><br/>
+             </div>
               Cricket.
             </h2>
             <p className="font-body text-lg text-white/60 leading-loose mb-4">
