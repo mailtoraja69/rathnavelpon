@@ -204,7 +204,7 @@ function Stats() {
               <div className="h-px w-6" style={{ backgroundColor: GOLD }}/>
               <span className="font-sans text-xs tracking-widest uppercase" style={{ color: GOLD }}>Number Crunching</span>
             </div>
-            <h2 className="font-display text-3xl font-bold text-gray-900">Impact in Numbers</h2>
+            <h2 className="font-display text-3xl font-bold text-gray-900"></h2>
           </div>
           <p className="font-display text-xl italic" style={{ color: GOLD }}></p>
         </motion.div>
@@ -240,12 +240,9 @@ function About() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
           <motion.div initial={{ opacity: 0, x: -24 }} animate={v ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
-              Coimbatore.<br/>
-                Classrooms.<br/>
-              Cricket.
             </h2>
             <p className="font-body text-lg text-white/60 leading-loose mb-4">
-              A thorough Coimbatore person, Rathnavel was schooled at Carmel Garden and SBOA. He completed B.E. Civil Engineering from KCT and M.E. Environmental Engineering in GCT. He has two decades of experience in technical education with 8 engineering colleges. In parallel, he has emerged over five lustrums, as a facilitator for short non formal programmes. He has also had a short stint in environmental management and life insurance.
+              A thorough Coimbatore person, Rathnavel was schooled at Carmel Garden and SBOA. He completed B.E. Civil Engg. from KCT and M.E. Environmental Engg. in GCT. He has two decades of experience in technical education with 8 engineering colleges. In parallel, he has emerged over five lustrums, as a facilitator for short non formal programmes. He has also had a short stint in environmental management and life insurance.
             </p>
             <p className="font-body text-lg text-white/45 leading-loose mb-4">
               Rathnavel is a part of the lovely RATHNA KUNJARAM family. His social tryst is courtesy Rotary International, Senior Chamber International, Institute of Liberal Studies and Institution of Engineers (India).
