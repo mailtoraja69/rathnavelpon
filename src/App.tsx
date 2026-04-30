@@ -206,7 +206,7 @@ function Stats() {
             </div>
             <h2 className="font-display text-3xl font-bold text-gray-900">Impact in Numbers</h2>
           </div>
-          <p className="font-display text-xl italic" style={{ color: GOLD }}>Coimbatore — Classrooms — Cricket</p>
+          <p className="font-display text-xl italic" style={{ color: GOLD }}>Coimbatore — Classrooms — </p>
         </motion.div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {stats.map((s, i) => (
@@ -241,8 +241,7 @@ function About() {
           <motion.div initial={{ opacity: 0, x: -24 }} animate={v ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
               Coimbatore.<br/>
-               </div>
-                <"gold-text">Classrooms.</span><br/>
+                Classrooms.<br/>
              </div>
               Cricket.
             </h2>
