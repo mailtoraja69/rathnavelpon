@@ -240,8 +240,8 @@ function About() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
           <motion.div initial={{ opacity: 0, x: -24 }} animate={v ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
             <h2 className="font-display text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
-              Coimbatore.
-              Classrooms.
+              Coimbatore.<br/>
+              Classrooms.<br/>
               Cricket.
             </h2>
             <p className="font-body text-lg text-white/60 leading-loose mb-4">
